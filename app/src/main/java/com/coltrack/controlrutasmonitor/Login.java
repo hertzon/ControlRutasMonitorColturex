@@ -1,9 +1,14 @@
 package com.coltrack.controlrutasmonitor;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +53,7 @@ public class Login extends AppCompatActivity {
     String strRuta;
     JSONObject jsonObject;
     SQLiteDatabase myDB;
+    Button readGPS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +71,30 @@ public class Login extends AppCompatActivity {
         editTextRuta=(EditText)findViewById(R.id.editTextRuta);
         btnIngresar=(Button)findViewById(R.id.btnIngresar);
         btnRegistrar=(TextView)findViewById(R.id.textViewRegistrar);
+        readGPS=(Button)findViewById(R.id.readGPS);
+        readGPS.setVisibility(View.INVISIBLE);
 
+
+
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+        }else{
+            showGPSDisabledAlertToUser();
+        }
+        new GPSTracker(Login.this);
+
+
+        readGPS.setOnClickListener(new View.OnClickListener() {
+            double longitude=0;
+            double latitude=0;
+            @Override
+            public void onClick(View v) {
+                latitude  = GPSTracker.latitude; // latitude
+                longitude = GPSTracker.longitude; // latitude
+                Log.d(LOGTAG,"latitud: "+latitude);
+            }
+        });
 
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +141,29 @@ public class Login extends AppCompatActivity {
         });
 
 
+    }
+
+    private void showGPSDisabledAlertToUser(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("GPS esta deshabilitado, para el funcionamiento de esta aplicacion debe habilitarlo!")
+                .setCancelable(false)
+                .setPositiveButton("Habilitar el GPS",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id){
+                                Intent callGPSSettingIntent = new Intent(
+                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivity(callGPSSettingIntent);
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("Cancelar",
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        dialog.cancel();
+                        finish();
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
     private class conexionServer extends AsyncTask<Void, Void, Boolean> {
         private ProgressDialog pd;
@@ -361,4 +413,5 @@ public class Login extends AppCompatActivity {
         }
 
     }
+
 }

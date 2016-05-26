@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,8 +57,9 @@ public class Listado extends AppCompatActivity {
     String finalizado;
     Button buttonRecogerDejar;
 
-    Button buttonFinalizar;
+
     Button buttonLlamar;
+    Button buttonTestGPS;
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
@@ -72,6 +74,11 @@ public class Listado extends AppCompatActivity {
     String colegio;
     String latitud;
     String longitud;
+    boolean selected=false;
+    double latitude=0;
+    double longitude=0;
+    String strLongitud=null;
+    String strLatitud=null;
 
 
 
@@ -81,15 +88,16 @@ public class Listado extends AppCompatActivity {
         setContentView(R.layout.activity_listado);
         textViewEstudiantesRuta=(TextView)findViewById(R.id.textViewEstudiantesRuta);
         textViewAccion=(TextView)findViewById(R.id.textViewAccion);
-        buttonAccion=(Button)findViewById(R.id.buttonAccion);
         buttonRecogerDejar=(Button)findViewById(R.id.buttonRecoger);
-        buttonFinalizar=(Button)findViewById(R.id.buttonFinalizar);
         expListView = (ExpandableListView) findViewById(R.id.lvExp1);
         buttonLlamar=(Button)findViewById(R.id.buttonLlamar);
         textViewProgreso=(TextView)findViewById(R.id.textViewProgreso);
         textViewEstudianteSeleccionado=(TextView)findViewById(R.id.textViewEstudianteSeleccionado);
         textViewGrado=(TextView)findViewById(R.id.textViewGrado);
         textViewMobilAcudiente=(TextView)findViewById(R.id.textViewMobilAcudiente);
+        buttonTestGPS=(Button)findViewById(R.id.buttonTestGPS);
+
+
 
 
 
@@ -100,83 +108,37 @@ public class Listado extends AppCompatActivity {
         textViewEstudiantesRuta.setText("Estudiantes Ruta: " + ruta);
         if (accion.equals("recoger")){
             textViewAccion.setText("Accion: Recoger Estudiantes");
-            buttonAccion.setText("Comenzar Recoger Estudiantes");
         }else if (accion.equals("dejar")){
             textViewAccion.setText("Accion: Dejar Estudiantes");
-            buttonAccion.setText("Comenzar Dejar Estudiantes");
 
         }
         db = openOrCreateDatabase("controlRutas", MODE_PRIVATE, null);
-        //db.execSQL("DROP TABLE IF EXISTS eventos");//borramos tabla
-        db.execSQL("CREATE TABLE IF NOT EXISTS "
-                + "eventos"
-                + " (ruta TEXT, evento TEXT, timeStamp TEXT,finalizado TEXT);");
-        c = db.rawQuery("select * from eventos where ruta="+"'"+ruta+"'", null);
-        Log.d(LOGTAG, "numero de filas db: " + c.getCount());
-
-        if (c.getCount()==0) {
-            //si la tabla estaba vacia
-            if (accion.equals("recoger")) {
-                db.execSQL("insert into eventos (ruta,evento,finalizado) values(" + "'" + ruta + "'," + "'" + "recoger" + "'" + "," + "'" + "si" + "'" + ")");
-            }
-            if (accion.equals("dejar")) {
-                db.execSQL("insert into eventos (ruta,evento,finalizado) values(" + "'" + ruta + "'," + "'" + "dejar" + "'" + "," + "'" + "si" + "'" + ")");
-            }
-        }else {
+        new GPSTracker(Listado.this);
 
 
+        readGPS();
+
+
+        if (!selected){
+            buttonLlamar.setVisibility(View.GONE);
+            buttonRecogerDejar.setVisibility(View.GONE);
+            textViewEstudianteSeleccionado.setVisibility(View.VISIBLE);
+            textViewEstudianteSeleccionado.setText("Seleccione un Estudiante!");
+            textViewGrado.setVisibility(View.GONE);
+            textViewMobilAcudiente.setVisibility(View.GONE);
         }
-        //c.close();
-        buttonFinalizar.setVisibility(View.GONE);
-        buttonRecogerDejar.setVisibility(View.GONE);
-        buttonLlamar.setVisibility(View.GONE);
-        expListView.setVisibility(View.GONE);
-        textViewEstudianteSeleccionado.setVisibility(View.GONE);
-        textViewGrado.setVisibility(View.GONE);
-        textViewMobilAcudiente.setVisibility(View.GONE);
 
-        c = db.rawQuery("select * from eventos where ruta=" + "'" + ruta + "'", null);
-        c.moveToNext();
-        evento=c.getString(c.getColumnIndex("evento"));
-        Log.d(LOGTAG, "Evento en db: " + evento);
-        finalizado=c.getString(c.getColumnIndex("finalizado"));
-        Log.d(LOGTAG, "Finalizado evento en db: " + finalizado);
-        if (finalizado.equals("si")){
-            buttonAccion.setVisibility(View.VISIBLE);
-            buttonAccion.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                    new AlertDialog.Builder(Listado.this)
-                            .setTitle("Accion")
-                            .setMessage("Desea  "+buttonAccion.getText().toString()+" ?")
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setPositiveButton("Si", new DialogInterface.OnClickListener() {
-
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    //Toast.makeText(Listado.this, "Yaay", Toast.LENGTH_SHORT).show();
-                                    if (accion.equals("recoger")){
-                                        buttonAccion.setVisibility(View.GONE);
-                                        //buttonRecoger.setVisibility(View.VISIBLE);
-                                        //buttonLlamar.setVisibility(View.VISIBLE);
-                                        expListView.setVisibility(View.VISIBLE);
-                                    }
-                                    if (accion.equals("dejar")){
-                                        buttonAccion.setVisibility(View.GONE);
-                                        //buttonDejar.setVisibility(View.VISIBLE);
-                                        //buttonLlamar.setVisibility(View.VISIBLE);
-                                        expListView.setVisibility(View.VISIBLE);
-                                    }
-                                    buttonFinalizar.setVisibility(View.VISIBLE);
-                                }})
-                            .setNegativeButton("No", null).show();
-                }
-            });
-        }else {
-            buttonAccion.setVisibility(View.GONE);
-        }
         listado = new ArrayList<String>();
         pupulateItems();
+
+        buttonTestGPS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                readGPS();
+                Toast.makeText(getApplicationContext(),"Lat: "+strLatitud+" Long: "+strLongitud,Toast.LENGTH_SHORT).show();
+            }
+        });
 
         buttonRecogerDejar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,16 +150,7 @@ public class Listado extends AppCompatActivity {
                         .setPositiveButton("Si", new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                //Toast.makeText(Listado.this, "Yaay", Toast.LENGTH_SHORT).show();
-                                db.execSQL("update estudiantes set evento='realizado' where nombreEstudiante='" + estudianteSeleccionado + "'");
-                                //buttonFinalizar.setVisibility(View.GONE);
-                                buttonRecogerDejar.setVisibility(View.GONE);
-                                buttonLlamar.setVisibility(View.GONE);
-                                textViewEstudianteSeleccionado.setVisibility(View.GONE);
-                                textViewGrado.setVisibility(View.GONE);
-                                textViewMobilAcudiente.setVisibility(View.GONE);
-                                estudiantesProcesados++;
-                                pupulateItems();
+
                                 //Enviamos el evento al servidor
                                 Log.d(LOGTAG,"Enviando evento al servidor....");
                                 sendEventos send1=new sendEventos();
@@ -240,7 +193,6 @@ public class Listado extends AppCompatActivity {
                         textViewMobilAcudiente.setText("Telefono Acudiente: " + telefonoAcudiente);
                     } while (c.moveToNext());
                     buttonLlamar.setVisibility(View.VISIBLE);
-                    buttonFinalizar.setVisibility(View.VISIBLE);
                     if (accion.equals("recoger")) {
                         buttonRecogerDejar.setVisibility(View.VISIBLE);
                         buttonRecogerDejar.setText("Recoger");
@@ -289,6 +241,7 @@ public class Listado extends AppCompatActivity {
         }
 
         c = db.rawQuery("SELECT * FROM " + "estudiantes WHERE ruta1='"+ruta+"' and evento='FALTA'", null);
+        //c = db.rawQuery("SELECT * FROM " + "estudiantes WHERE ruta1='"+ruta+"'", null);
         int Column1=0;int Column2=0;int Column3=0;int Column4=0;int Column5=0;
         int Column6=0;int Column7=0;int Column8=0;
         Column1 = c.getColumnIndex("nombreEstudiante");
@@ -316,12 +269,25 @@ public class Listado extends AppCompatActivity {
             porcentaje=(int)temp;
             porcentaje=porcentaje;
         }
-        textViewProgreso.setText("Progreso: "+estudiantesProcesados+" estudiantes de "+estudiantesTotales+ " ["+porcentaje+" %]");
+        textViewProgreso.setText("Progreso: "+estudiantesProcesados+" / "+estudiantesTotales+ " ["+porcentaje+" %]");
         listDataChild.put(listDataHeader.get(0), listado); // Header, Child data
         listAdapter=new com.coltrack.controlrutasmonitor.ExpandableListAdapter(this, listDataHeader, listDataChild);
         expListView.setAdapter(listAdapter);
 
 
+    }
+
+    public void readGPS(){
+
+        latitude  = GPSTracker.latitude; // latitude
+        longitude = GPSTracker.longitude; // latitude
+        DecimalFormat numberFormat = new DecimalFormat("#.#######");
+        strLatitud=numberFormat.format(latitude);
+        strLatitud=strLatitud.replace(",",".");
+        strLongitud=numberFormat.format(longitude);
+        strLongitud=strLongitud.replace(",",".");
+        //Toast.makeText(getApplicationContext(),"Lat: "+strLatitud+" Long: "+strLongitud,Toast.LENGTH_SHORT).show();
+        Log.d(LOGTAG,"Lat: "+strLatitud +" Long: "+strLongitud);
     }
 
 
@@ -352,6 +318,16 @@ public class Listado extends AppCompatActivity {
                 });
             }else {
                 Toast.makeText(Listado.this,"Evento procesado correctamente!!",Toast.LENGTH_SHORT).show();
+                db.execSQL("update estudiantes set evento='realizado' where nombreEstudiante='" + estudianteSeleccionado + "'");
+                buttonRecogerDejar.setVisibility(View.GONE);
+                buttonLlamar.setVisibility(View.GONE);
+                textViewEstudianteSeleccionado.setVisibility(View.VISIBLE);
+                textViewEstudianteSeleccionado.setText("Seleccione un estudiante!");
+                textViewGrado.setVisibility(View.GONE);
+                textViewMobilAcudiente.setVisibility(View.GONE);
+                estudiantesProcesados++;
+                pupulateItems();
+
 
             }
         }
@@ -362,7 +338,7 @@ public class Listado extends AppCompatActivity {
             jsonObject = new JSONObject();
             try {
 
-
+                readGPS();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String timestamp = sdf.format(new Date());
 
@@ -371,8 +347,8 @@ public class Listado extends AppCompatActivity {
                 Log.d(LOGTAG,"datetime: "+timestamp);
                 Log.d(LOGTAG,"ruta: "+ruta);
                 Log.d(LOGTAG,"colegio: "+colegio);
-                Log.d(LOGTAG,"latitud: "+latitud);
-                Log.d(LOGTAG,"longitud: "+longitud);
+                Log.d(LOGTAG,"latitud: "+strLatitud);
+                Log.d(LOGTAG,"longitud: "+strLongitud);
 
 
 
@@ -382,8 +358,8 @@ public class Listado extends AppCompatActivity {
                 jsonObject.put("datetime", timestamp);
                 jsonObject.put("ruta", ruta);
                 jsonObject.put("colegio", colegio);
-                jsonObject.put("latitud", latitud);
-                jsonObject.put("longitud", longitud);
+                jsonObject.put("latitud", strLatitud);
+                jsonObject.put("longitud", strLongitud);
 
 
                 //Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
@@ -427,7 +403,7 @@ public class Listado extends AppCompatActivity {
                         object = new JSONObject(jsonResult);
                         String estadoLogin = object.getString("rta");
 
-                        Log.d(LOGTAG, "Respuesta Server Login:" + estadoLogin);
+                        Log.d(LOGTAG, "Respuesta Server:" + estadoLogin);
                         response=estadoLogin;
 
                     } catch (JSONException e) {
