@@ -64,7 +64,8 @@
 
             android:hint="Ruta"
             android:textColorHint="#c2c2c3"
-            android:textSize="8dp" />
+            android:textSize="8dp"
+            android:text="36A" />
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

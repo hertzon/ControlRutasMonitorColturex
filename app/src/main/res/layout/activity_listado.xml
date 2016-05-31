@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Estudiantes Ruta: "
+            android:text="Normal Estudiantes Ruta: "
             android:id="@+id/textViewEstudiantesRuta"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:text="Recoger"
             android:id="@+id/buttonRecoger"
-            android:layout_below="@+id/textViewMobilAcudiente"
+            android:layout_below="@+id/buttonLlegoRuta"
             android:layout_centerHorizontal="true" />
 
         <Button
@@ -108,6 +108,23 @@
             android:layout_below="@+id/textViewGrado"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test GPS"
+            android:id="@+id/buttonTestGPS"
+            android:layout_below="@+id/buttonLlamar"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Llego Ruta"
+            android:id="@+id/buttonLlegoRuta"
+            android:layout_below="@+id/textViewMobilAcudiente"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 </RelativeLayout>

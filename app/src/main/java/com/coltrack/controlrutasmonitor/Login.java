@@ -66,13 +66,17 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+        }
+
         editTextUsuario=(EditText)findViewById(R.id.editTextUsuario);
         editTextPassword=(EditText)findViewById(R.id.editTextPassword);
         editTextRuta=(EditText)findViewById(R.id.editTextRuta);
         btnIngresar=(Button)findViewById(R.id.btnIngresar);
         btnRegistrar=(TextView)findViewById(R.id.textViewRegistrar);
-        readGPS=(Button)findViewById(R.id.readGPS);
-        readGPS.setVisibility(View.INVISIBLE);
+        //readGPS=(Button)findViewById(R.id.readGPS);
+        //readGPS.setVisibility(View.INVISIBLE);
 
 
 
@@ -85,16 +89,16 @@ public class Login extends AppCompatActivity {
         new GPSTracker(Login.this);
 
 
-        readGPS.setOnClickListener(new View.OnClickListener() {
-            double longitude=0;
-            double latitude=0;
-            @Override
-            public void onClick(View v) {
-                latitude  = GPSTracker.latitude; // latitude
-                longitude = GPSTracker.longitude; // latitude
-                Log.d(LOGTAG,"latitud: "+latitude);
-            }
-        });
+//        readGPS.setOnClickListener(new View.OnClickListener() {
+//            double longitude=0;
+//            double latitude=0;
+//            @Override
+//            public void onClick(View v) {
+//                latitude  = GPSTracker.latitude; // latitude
+//                longitude = GPSTracker.longitude; // latitude
+//                Log.d(LOGTAG,"latitud: "+latitude);
+//            }
+//        });
 
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,7 +235,7 @@ public class Login extends AppCompatActivity {
                         myDB.execSQL("DROP TABLE IF EXISTS estudiantes");//borramos tabla
                         myDB.execSQL("CREATE TABLE IF NOT EXISTS "
                                 + "estudiantes"
-                                + " (nombreEstudiante TEXT, ruta1 TEXT, nombreAcudiente TEXT, telefonoAcudiente TEXT, correoAcudiente TEXT, codigo TEXT, curso TEXT, colegio TEXT, evento TEXT);");
+                                + " (nombreEstudiante TEXT, ruta1 TEXT, nombreAcudiente TEXT, telefonoAcudiente TEXT, correoAcudiente TEXT, codigo TEXT, curso TEXT, colegio TEXT, evento TEXT, paraderoAM TEXT, paraderoPM TEXT);");
 
                         for (int i=0;i<nrows;i++){
                             parts[i]=parts[i].replace("{", "");
@@ -248,7 +252,10 @@ public class Login extends AppCompatActivity {
                             String correoAcudiente=null;
                             String codigo=null;
                             String colegio=null;
-                            for (int j=0;j<partes.length;j++){                        String[] subParts=partes[j].split(Pattern.quote(":"));
+                            String paraderoAM=null;
+                            String paraderoPM=null;
+                            for (int j=0;j<partes.length;j++){
+                                String[] subParts=partes[j].split(Pattern.quote(":"));
                                 Log.d(LOGTAG, "subparte " + j + ":" + subParts[1]);
                                 switch (j){
                                     case 0:
@@ -272,6 +279,12 @@ public class Login extends AppCompatActivity {
                                     case 6:
                                         colegio=subParts[1];
                                         break;
+                                    case 7:
+                                        paraderoAM=subParts[1];
+                                        break;
+                                    case 8:
+                                        paraderoPM=subParts[1];
+                                        break;
                                 }
                             }
 //                            myDB.execSQL("INSERT INTO "
@@ -280,13 +293,8 @@ public class Login extends AppCompatActivity {
 //                                    + " VALUES ("+"'"+ nombreEstudiante+"'" + ", "+"'"+curso+"'"+", "+"'"+nombreAcudiente+"'"+", "+"'"+telefonoAcudiente+"'"+", "+"'"+correoAcudiente +"'"+", "+"'"+codigo +"'"+", "+"'"+colegio+"'"+");");
                             myDB.execSQL("INSERT INTO "
                                     + "estudiantes"
-                                    + " (nombreEstudiante, ruta1, nombreAcudiente, telefonoAcudiente, correoAcudiente, codigo, curso, colegio,evento)"
-                                    + " VALUES ("+"'"+ nombreEstudiante+"'" + ", "+"'"+strRuta+"'"+", "+"'"+nombreAcudiente+"'"+", "+"'"+telefonoAcudiente+"'"+", "+"'"+correoAcudiente +"'"+", "+"'"+codigo +"'"+", "+"'"+curso +"'"+", "+"'"+colegio+"'"+", 'FALTA'"+");");
-
-
-
-
-
+                                    + " (nombreEstudiante, ruta1, nombreAcudiente, telefonoAcudiente, correoAcudiente, codigo, curso, colegio,evento,paraderoAM,paraderoPM)"
+                                    + " VALUES ("+"'"+ nombreEstudiante+"'" + ", "+"'"+strRuta+"'"+", "+"'"+nombreAcudiente+"'"+", "+"'"+telefonoAcudiente+"'"+", "+"'"+correoAcudiente +"'"+", "+"'"+codigo +"'"+", "+"'"+curso +"'"+", "+"'"+colegio+"'"+", 'FALTA',"+"'"+paraderoAM+"',"+"'"+paraderoPM+"'"+");");
 
                         }
                         myDB.close();
