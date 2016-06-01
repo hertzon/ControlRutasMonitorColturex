@@ -45,85 +45,22 @@
             android:layout_alignParentStart="true"
             android:textSize="14dp" />
 
-        <ExpandableListView
-            android:id="@+id/lvExp1"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_weight="0.09"
-            android:choiceMode="singleChoice"
-            android:textAlignment="center"
-            android:layout_marginTop="75dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Recoger"
-            android:id="@+id/buttonRecoger"
-            android:layout_below="@+id/buttonLlegoRuta"
-            android:layout_centerHorizontal="true" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Llamar Acudiente"
-            android:id="@+id/buttonLlamar"
-            android:layout_below="@+id/buttonRecoger"
-            android:layout_centerHorizontal="true"
-             />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Estudiante Seleccionado:"
-            android:id="@+id/textViewEstudianteSeleccionado"
-            android:layout_below="@+id/lvExp1"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:textSize="16dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Grado"
-            android:id="@+id/textViewGrado"
-            android:textSize="16dp"
-            android:layout_below="@+id/textViewEstudianteSeleccionado"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Movil Acudiente"
-            android:id="@+id/textViewMobilAcudiente"
-            android:textSize="16dp"
-            android:layout_below="@+id/textViewGrado"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Test GPS"
             android:id="@+id/buttonTestGPS"
-            android:layout_below="@+id/buttonLlamar"
+            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Llego Ruta"
-            android:id="@+id/buttonLlegoRuta"
-            android:layout_below="@+id/textViewMobilAcudiente"
+            android:text="Seleccionar Estudiante(s)"
+            android:id="@+id/buttonSeleccionarEstudiante"
+            android:layout_marginBottom="37dp"
+            android:layout_above="@+id/buttonTestGPS"
             android:layout_centerHorizontal="true" />
 
     </RelativeLayout>

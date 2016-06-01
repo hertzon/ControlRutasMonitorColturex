@@ -54,21 +54,18 @@ public class Listado extends AppCompatActivity {
     TextView textViewEstudiantesRuta;
     TextView textViewAccion;
     TextView textViewProgreso;
-    TextView textViewEstudianteSeleccionado;
-    TextView textViewGrado;
-    TextView textViewMobilAcudiente;
+    Button buttonSeleccionarEstudiante;
 
 
     String ruta;
     String accion;
-    Button buttonAccion;
     String LOGTAG="log";
     String evento;
     String finalizado;
-    Button buttonRecogerDejar;
-    Button buttonLlegoRuta;
 
-    Button buttonLlamar;
+
+
+
     Button buttonTestGPS;
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
@@ -106,15 +103,11 @@ public class Listado extends AppCompatActivity {
         setContentView(R.layout.activity_listado);
         textViewEstudiantesRuta=(TextView)findViewById(R.id.textViewEstudiantesRuta);
         textViewAccion=(TextView)findViewById(R.id.textViewAccion);
-        buttonRecogerDejar=(Button)findViewById(R.id.buttonRecoger);
         expListView = (ExpandableListView) findViewById(R.id.lvExp1);
-        buttonLlamar=(Button)findViewById(R.id.buttonLlamar);
         textViewProgreso=(TextView)findViewById(R.id.textViewProgreso);
-        textViewEstudianteSeleccionado=(TextView)findViewById(R.id.textViewEstudianteSeleccionado);
-        textViewGrado=(TextView)findViewById(R.id.textViewGrado);
-        textViewMobilAcudiente=(TextView)findViewById(R.id.textViewMobilAcudiente);
         buttonTestGPS=(Button)findViewById(R.id.buttonTestGPS);
-        buttonLlegoRuta=(Button)findViewById(R.id.buttonLlegoRuta);
+        buttonSeleccionarEstudiante=(Button)findViewById(R.id.buttonSeleccionarEstudiante);
+
 
 
 
@@ -137,54 +130,55 @@ public class Listado extends AppCompatActivity {
         getCurrentLocation();
         readGPS();
 
-
-        if (!selected){
-            buttonLlamar.setVisibility(View.GONE);
-            buttonRecogerDejar.setVisibility(View.GONE);
-            textViewEstudianteSeleccionado.setVisibility(View.VISIBLE);
-            textViewEstudianteSeleccionado.setText("Seleccione un Estudiante!");
-            textViewGrado.setVisibility(View.GONE);
-            textViewMobilAcudiente.setVisibility(View.GONE);
-            buttonLlegoRuta.setVisibility(View.INVISIBLE);
-        }
-
-
-        listado = new ArrayList<String>();
-        pupulateItems();
-
-        buttonLlegoRuta.setOnClickListener(new View.OnClickListener() {
+        buttonSeleccionarEstudiante.setOnClickListener(new View.OnClickListener() {
             @Override
-
             public void onClick(View v) {
-                stopCounter=false;
-                seconds=0;
-                new CountDownTimer(1000, 1000) {
-
-
-
-
-                    public void onTick(long millisUntilFinished) {
-                        seconds++;
-                        Log.d(LOGTAG,"conteo: "+seconds);
-                        if (!onlyTimeProgreso){
-                            onlyTimeProgreso=true;
-                            progresoOriginal=textViewProgreso.getText().toString();
-                        }
-
-                        String texto=progresoOriginal+", Espera: "+seconds;
-                        textViewProgreso.setText(texto);
-
-
-                    }
-
-                    public void onFinish() {
-                        if (!stopCounter) {
-                            this.start();
-                        }
-                    }
-                }.start();
+                Intent i=new Intent(getApplicationContext(),Selecciona.class);
+                i.putExtra("accion",accion);
+                i.putExtra("ruta",ruta);
+                startActivity(i);
             }
         });
+
+
+
+
+//        listado = new ArrayList<String>();
+//        pupulateItems();
+//
+//        buttonLlegoRuta.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//
+//            public void onClick(View v) {
+//                stopCounter=false;
+//                seconds=0;
+//                new CountDownTimer(1000, 1000) {
+//
+//
+//
+//
+//                    public void onTick(long millisUntilFinished) {
+//                        seconds++;
+//                        Log.d(LOGTAG,"conteo: "+seconds);
+//                        if (!onlyTimeProgreso){
+//                            onlyTimeProgreso=true;
+//                            progresoOriginal=textViewProgreso.getText().toString();
+//                        }
+//
+//                        String texto=progresoOriginal+", Espera: "+seconds;
+//                        textViewProgreso.setText(texto);
+//
+//
+//                    }
+//
+//                    public void onFinish() {
+//                        if (!stopCounter) {
+//                            this.start();
+//                        }
+//                    }
+//                }.start();
+//            }
+//        });
 
         buttonTestGPS.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,81 +190,81 @@ public class Listado extends AppCompatActivity {
             }
         });
 
-        buttonRecogerDejar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                new AlertDialog.Builder(Listado.this)
-                        .setTitle("Accion")
-                        .setMessage("Desea "+accion+" al estudiante " +estudianteSeleccionado+"?")
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                stopCounter=true;
-                                onlyTimeProgreso=false;
-                                textViewProgreso.setText(progresoOriginal);
-                                //Enviamos el evento al servidor
-                                Log.d(LOGTAG,"Enviando evento al servidor....");
-                                sendEventos send1=new sendEventos();
-                                send1.execute();
-                            }})
-                        .setNegativeButton("No", null).show();
-
-            }
-        });
-
-
-        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                estudianteSeleccionado = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
-                String[] parts=estudianteSeleccionado.split(",");
-                estudianteSeleccionado=parts[0];
-                getCurrentLocation();
-                seconds=0;
-
-                Log.d(LOGTAG, "Estudiante Seleccionado: " + estudianteSeleccionado);
-                textViewEstudianteSeleccionado.setVisibility(View.VISIBLE);
-                textViewEstudianteSeleccionado.setText("Estudiante Seleccionado: " + estudianteSeleccionado);
-                textViewGrado.setVisibility(View.VISIBLE);
-                textViewMobilAcudiente.setVisibility(View.VISIBLE);
-                buttonLlegoRuta.setVisibility(View.VISIBLE);
-                query="SELECT * FROM estudiantes WHERE nombreEstudiante=" + "'" + estudianteSeleccionado + "'";
-                Log.d(LOGTAG, "Query onChildClick: " + query);
-                c = db.rawQuery(query, null);
-                c.moveToFirst();
-                if (c != null) {
-                    do {
-//                        String grado = null;
-//                        grado = c.getString(c.getColumnIndex("curso"));
-//                        String correoAcudiente = c.getString(c.getColumnIndex("correoAcudiente"));
-//                        String telefonoAcudiente = c.getString(c.getColumnIndex("telefonoAcudiente"));
-//                        colegio= c.getString(c.getColumnIndex("colegio"));
-//                        paraderoAM=c.getString(c.getColumnIndex("paraderoAM"));
-//                        paraderoPM=c.getString(c.getColumnIndex("paraderoPM"));
+//        buttonRecogerDejar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 //
-//                        Log.d(LOGTAG, "Grado Estudiante Seleccionado: " + grado);
-//                        Log.d(LOGTAG, "Telefono Acudiente: " + telefonoAcudiente);
-//                        Log.d(LOGTAG, "Correo Acudiente: " + correoAcudiente);
-//                        textViewGrado.setText("Grado: " + grado);
-//                        textViewMobilAcudiente.setText("Telefono Acudiente: " + telefonoAcudiente);
-                    } while (c.moveToNext());
-                    buttonLlamar.setVisibility(View.VISIBLE);
-                    if (accion.equals("recoger")) {
-                        buttonRecogerDejar.setVisibility(View.VISIBLE);
-                        buttonRecogerDejar.setText("Recoger");
-                    } else if (accion.equals("dejar")) {
-                        buttonRecogerDejar.setVisibility(View.VISIBLE);
-                        buttonRecogerDejar.setText("Dejar");
-                    }
-                }
+//                new AlertDialog.Builder(Listado.this)
+//                        .setTitle("Accion")
+//                        .setMessage("Desea "+accion+" al estudiante " +estudianteSeleccionado+"?")
+//                        .setIcon(android.R.drawable.ic_dialog_alert)
+//                        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+//
+//                            public void onClick(DialogInterface dialog, int whichButton) {
+//                                stopCounter=true;
+//                                onlyTimeProgreso=false;
+//                                textViewProgreso.setText(progresoOriginal);
+//                                //Enviamos el evento al servidor
+//                                Log.d(LOGTAG,"Enviando evento al servidor....");
+//                                sendEventos send1=new sendEventos();
+//                                send1.execute();
+//                            }})
+//                        .setNegativeButton("No", null).show();
+//
+//            }
+//        });
 
 
-                parent.collapseGroup(groupPosition);
-                return false;
-            }
-        });
+//        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+//            @Override
+//            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+//                estudianteSeleccionado = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
+//                String[] parts=estudianteSeleccionado.split(",");
+//                estudianteSeleccionado=parts[0];
+//                getCurrentLocation();
+//                seconds=0;
+//
+//                Log.d(LOGTAG, "Estudiante Seleccionado: " + estudianteSeleccionado);
+//                textViewEstudianteSeleccionado.setVisibility(View.VISIBLE);
+//                textViewEstudianteSeleccionado.setText("Estudiante Seleccionado: " + estudianteSeleccionado);
+//                textViewGrado.setVisibility(View.VISIBLE);
+//                textViewMobilAcudiente.setVisibility(View.VISIBLE);
+//                buttonLlegoRuta.setVisibility(View.VISIBLE);
+//                query="SELECT * FROM estudiantes WHERE nombreEstudiante=" + "'" + estudianteSeleccionado + "'";
+//                Log.d(LOGTAG, "Query onChildClick: " + query);
+//                c = db.rawQuery(query, null);
+//                c.moveToFirst();
+//                if (c != null) {
+//                    do {
+////                        String grado = null;
+////                        grado = c.getString(c.getColumnIndex("curso"));
+////                        String correoAcudiente = c.getString(c.getColumnIndex("correoAcudiente"));
+////                        String telefonoAcudiente = c.getString(c.getColumnIndex("telefonoAcudiente"));
+////                        colegio= c.getString(c.getColumnIndex("colegio"));
+////                        paraderoAM=c.getString(c.getColumnIndex("paraderoAM"));
+////                        paraderoPM=c.getString(c.getColumnIndex("paraderoPM"));
+////
+////                        Log.d(LOGTAG, "Grado Estudiante Seleccionado: " + grado);
+////                        Log.d(LOGTAG, "Telefono Acudiente: " + telefonoAcudiente);
+////                        Log.d(LOGTAG, "Correo Acudiente: " + correoAcudiente);
+////                        textViewGrado.setText("Grado: " + grado);
+////                        textViewMobilAcudiente.setText("Telefono Acudiente: " + telefonoAcudiente);
+//                    } while (c.moveToNext());
+//                    buttonLlamar.setVisibility(View.VISIBLE);
+//                    if (accion.equals("recoger")) {
+//                        buttonRecogerDejar.setVisibility(View.VISIBLE);
+//                        buttonRecogerDejar.setText("Recoger");
+//                    } else if (accion.equals("dejar")) {
+//                        buttonRecogerDejar.setVisibility(View.VISIBLE);
+//                        buttonRecogerDejar.setText("Dejar");
+//                    }
+//                }
+//
+//
+//                parent.collapseGroup(groupPosition);
+//                return false;
+//            }
+//        });
 
 
 
@@ -312,7 +306,7 @@ public class Listado extends AppCompatActivity {
             Log.d(LOGTAG,"Query recoger: "+"SELECT * FROM " + "estudiantes WHERE ruta1='"+ruta+"' and evento='FALTA' order by paraderoAM asc");
         }
         if (accion.equals("dejar")){
-            c = db.rawQuery("SELECT * FROM " + "estudiantes WHERE ruta1='"+ruta+"' and evento='FALTA' order by paraderoPM*1 desc", null);
+            c = db.rawQuery("SELECT * FROM " + "estudiantes WHERE ruta1='"+ruta+"' and evento='FALTA' order by paraderoPM*1 asc", null);
             Log.d(LOGTAG,"Query dejar: "+"SELECT * FROM " + "estudiantes WHERE ruta1='"+ruta+"' and evento='FALTA' order by paraderoPM desc");
         }
 
@@ -394,159 +388,159 @@ public class Listado extends AppCompatActivity {
 
 
     //CLASE PARA ENVIAR DATOS DE EVENTO AL SERVIDOR
-    private class sendEventos extends AsyncTask<Void, Void, Boolean> {
-        private ProgressDialog pd;
-        @Override
-        protected void onPreExecute() {
-            pd = ProgressDialog.show(Listado.this, "Estado Conexion Servidor", "Conectando...");
-            Log.d(LOGTAG,"preexecute");
-        }
-        @Override
-        protected void onPostExecute(Boolean result) {
-            Log.d(LOGTAG,"post execute");
-            if (pd.isShowing()) {
-                pd.dismiss();
-            }
-            if (!result) {
-                Toast.makeText(Listado.this,"Problema procesando evento!!",Toast.LENGTH_SHORT).show();
-                runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        //update ui here
-                        // display toast here
-                        //Toast.makeText(Login.this,"Usuario y/o contraseña invalidos!!!!",Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }else {
-                Toast.makeText(Listado.this,"Evento procesado correctamente!!",Toast.LENGTH_SHORT).show();
-                query="update estudiantes set evento='realizado' where nombreEstudiante='" + estudianteSeleccionado + "'";
-                Log.d(LOGTAG,"Query boton evento: "+query);
-                db.execSQL(query);
-                buttonRecogerDejar.setVisibility(View.GONE);
-                buttonLlamar.setVisibility(View.GONE);
-                textViewEstudianteSeleccionado.setVisibility(View.VISIBLE);
-                textViewEstudianteSeleccionado.setText("Seleccione un estudiante!");
-                textViewGrado.setVisibility(View.GONE);
-                textViewMobilAcudiente.setVisibility(View.GONE);
-                buttonLlegoRuta.setVisibility(View.INVISIBLE);
-                estudiantesProcesados++;
-                pupulateItems();
-
-
-            }
-        }
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            boolean status=false;
-            Log.d(LOGTAG, "doing");
-            jsonObject = new JSONObject();
-            try {
-
-                //readGPS();
-
-
-
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String timestamp = sdf.format(new Date());
-
-                Log.d(LOGTAG,"nombreEstudiante: "+estudianteSeleccionado);
-                Log.d(LOGTAG,"evento: "+accion);
-                Log.d(LOGTAG,"datetime: "+timestamp);
-                Log.d(LOGTAG,"ruta: "+ruta);
-                Log.d(LOGTAG,"colegio: "+colegio);
-                Log.d(LOGTAG,"latitud: "+strLatitud);
-                Log.d(LOGTAG,"longitud: "+strLongitud);
-
-
-
-
-                jsonObject.put("nombreEstudiante", estudianteSeleccionado);
-                jsonObject.put("evento", accion);
-                jsonObject.put("datetime", timestamp);
-                jsonObject.put("ruta", ruta);
-                jsonObject.put("colegio", colegio);
-                jsonObject.put("latitud", strLatitud);
-                jsonObject.put("longitud", strLongitud);
-                jsonObject.put("segundos",seconds);
-
-
-                //Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                nameValuePairs.add(new BasicNameValuePair("json", jsonObject.toString()));
-                String response = makePOSTRequest("http://107.170.38.31/phpControlRutas/leerEventos.php", nameValuePairs );
-                Log.d(LOGTAG,"Response: "+response);
-                if (response.equals("PROBLEM")){
-                    //Toast.makeText(Login.this,"Usuario y/o contraseña errados!",Toast.LENGTH_SHORT).show();
-                    status=false;
-                }
-                if (response.equals("OK")){
-
-                    status=true;
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return status;
-        }
-        public String makePOSTRequest(String url, List<NameValuePair> nameValuePairs) {
-            String response = "";
-
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(url);
-            try {
-                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                try {
-                    HttpResponse httpResponse = httpClient.execute(httpPost);
-                    String jsonResult = inputStreamToString(httpResponse.getEntity().getContent()).toString();
-                    JSONObject object = null;
-                    Log.d(LOGTAG, "Response:" + jsonResult);
-                    try {
-                        object = new JSONObject(jsonResult);
-                        String estadoLogin = object.getString("rta");
-
-                        Log.d(LOGTAG, "Respuesta Server:" + estadoLogin);
-                        response=estadoLogin;
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.d(LOGTAG, "Error1:" + e);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            return response;
-        }
-        private StringBuilder inputStreamToString(InputStream is)
-        {
-            String rLine = "";
-            StringBuilder answer = new StringBuilder();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            try
-            {
-                while ((rLine = rd.readLine()) != null)
-                {
-                    answer.append(rLine);
-                }
-            }
-            catch(IOException e)
-            {
-                e.printStackTrace();
-            }
-            return answer;
-        }
-
-    }
+//    private class sendEventos extends AsyncTask<Void, Void, Boolean> {
+//        private ProgressDialog pd;
+//        @Override
+//        protected void onPreExecute() {
+//            pd = ProgressDialog.show(Listado.this, "Estado Conexion Servidor", "Conectando...");
+//            Log.d(LOGTAG,"preexecute");
+//        }
+//        @Override
+//        protected void onPostExecute(Boolean result) {
+//            Log.d(LOGTAG,"post execute");
+//            if (pd.isShowing()) {
+//                pd.dismiss();
+//            }
+//            if (!result) {
+//                Toast.makeText(Listado.this,"Problema procesando evento!!",Toast.LENGTH_SHORT).show();
+//                runOnUiThread(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//                        //update ui here
+//                        // display toast here
+//                        //Toast.makeText(Login.this,"Usuario y/o contraseña invalidos!!!!",Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }else {
+//                Toast.makeText(Listado.this,"Evento procesado correctamente!!",Toast.LENGTH_SHORT).show();
+//                query="update estudiantes set evento='realizado' where nombreEstudiante='" + estudianteSeleccionado + "'";
+//                Log.d(LOGTAG,"Query boton evento: "+query);
+//                db.execSQL(query);
+//                buttonRecogerDejar.setVisibility(View.GONE);
+//                buttonLlamar.setVisibility(View.GONE);
+//                textViewEstudianteSeleccionado.setVisibility(View.VISIBLE);
+//                textViewEstudianteSeleccionado.setText("Seleccione un estudiante!");
+//                textViewGrado.setVisibility(View.GONE);
+//                textViewMobilAcudiente.setVisibility(View.GONE);
+//                buttonLlegoRuta.setVisibility(View.INVISIBLE);
+//                estudiantesProcesados++;
+//                pupulateItems();
+//
+//
+//            }
+//        }
+//        @Override
+//        protected Boolean doInBackground(Void... params) {
+//            boolean status=false;
+//            Log.d(LOGTAG, "doing");
+//            jsonObject = new JSONObject();
+//            try {
+//
+//                //readGPS();
+//
+//
+//
+//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                String timestamp = sdf.format(new Date());
+//
+//                Log.d(LOGTAG,"nombreEstudiante: "+estudianteSeleccionado);
+//                Log.d(LOGTAG,"evento: "+accion);
+//                Log.d(LOGTAG,"datetime: "+timestamp);
+//                Log.d(LOGTAG,"ruta: "+ruta);
+//                Log.d(LOGTAG,"colegio: "+colegio);
+//                Log.d(LOGTAG,"latitud: "+strLatitud);
+//                Log.d(LOGTAG,"longitud: "+strLongitud);
+//
+//
+//
+//
+//                jsonObject.put("nombreEstudiante", estudianteSeleccionado);
+//                jsonObject.put("evento", accion);
+//                jsonObject.put("datetime", timestamp);
+//                jsonObject.put("ruta", ruta);
+//                jsonObject.put("colegio", colegio);
+//                jsonObject.put("latitud", strLatitud);
+//                jsonObject.put("longitud", strLongitud);
+//                jsonObject.put("segundos",seconds);
+//
+//
+//                //Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
+//                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+//                nameValuePairs.add(new BasicNameValuePair("json", jsonObject.toString()));
+//                String response = makePOSTRequest("http://107.170.38.31/phpControlRutas/leerEventos.php", nameValuePairs );
+//                Log.d(LOGTAG,"Response: "+response);
+//                if (response.equals("PROBLEM")){
+//                    //Toast.makeText(Login.this,"Usuario y/o contraseña errados!",Toast.LENGTH_SHORT).show();
+//                    status=false;
+//                }
+//                if (response.equals("OK")){
+//
+//                    status=true;
+//                    try {
+//                        Thread.sleep(100);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            return status;
+//        }
+//        public String makePOSTRequest(String url, List<NameValuePair> nameValuePairs) {
+//            String response = "";
+//
+//            HttpClient httpClient = new DefaultHttpClient();
+//            HttpPost httpPost = new HttpPost(url);
+//            try {
+//                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+//                try {
+//                    HttpResponse httpResponse = httpClient.execute(httpPost);
+//                    String jsonResult = inputStreamToString(httpResponse.getEntity().getContent()).toString();
+//                    JSONObject object = null;
+//                    Log.d(LOGTAG, "Response:" + jsonResult);
+//                    try {
+//                        object = new JSONObject(jsonResult);
+//                        String estadoLogin = object.getString("rta");
+//
+//                        Log.d(LOGTAG, "Respuesta Server:" + estadoLogin);
+//                        response=estadoLogin;
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                        Log.d(LOGTAG, "Error1:" + e);
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            }
+//            return response;
+//        }
+//        private StringBuilder inputStreamToString(InputStream is)
+//        {
+//            String rLine = "";
+//            StringBuilder answer = new StringBuilder();
+//            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+//            try
+//            {
+//                while ((rLine = rd.readLine()) != null)
+//                {
+//                    answer.append(rLine);
+//                }
+//            }
+//            catch(IOException e)
+//            {
+//                e.printStackTrace();
+//            }
+//            return answer;
+//        }
+//
+//    }
 
     public void getCurrentLocation() {
         LocationManager locationManager;
@@ -600,10 +594,10 @@ public class Listado extends AppCompatActivity {
 
                 });
     }
-    @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        moveTaskToBack(true);
+//    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

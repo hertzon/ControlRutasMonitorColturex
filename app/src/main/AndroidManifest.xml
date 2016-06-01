@@ -6,8 +6,6 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 
@@ -27,19 +25,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".amopm"
+        <activity
+            android:name=".amopm"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
-
-            />
-        <activity android:name=".Listado"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Listado"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
-
-
-
-            ></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".Selecciona" />
+        <activity android:name=".Eventos"></activity>
     </application>
 
 </manifest>
