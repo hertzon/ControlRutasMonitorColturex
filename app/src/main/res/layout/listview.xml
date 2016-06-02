@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.coltrack.controlrutasmonitor.Listado">
+
+    <RelativeLayout
+        android:layout_width="420dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+
+        <ListView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@android:id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            android:background="#ffffff"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="#0060b6"
+            android:dividerHeight="4dp"
+            android:scrollbarStyle="outsideOverlay"
+            android:paddingBottom="8dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/buttonLlego">
+
+        </ListView>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Llego Ruta"
+            android:id="@+id/buttonLlego"
+            android:background="@drawable/roundbtn"
+            android:textColor="#ffffff"
+            android:textSize="12dp"
+            android:layout_above="@+id/buttonAccion"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <Button
+            android:layout_width="140dp"
+            android:layout_height="30dp"
+            android:text="Recoger"
+            android:id="@+id/buttonAccion"
+            android:background="@drawable/roundbtn"
+            android:textColor="#ffffff"
+            android:textSize="12dp"
+            android:layout_marginBottom="10dp"
+            android:layout_above="@+id/buttonLlamar"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Novedades"
+            android:id="@+id/buttonEventos"
+            android:background="@drawable/roundbtn"
+            android:textColor="#ffffff"
+            android:textSize="12dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Llamar"
+            android:id="@+id/buttonLlamar"
+            android:background="@drawable/roundbtn"
+            android:textColor="#ffffff"
+            android:textSize="12dp"
+            android:layout_above="@+id/buttonEventos"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+</RelativeLayout>
