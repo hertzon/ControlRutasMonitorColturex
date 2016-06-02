@@ -24,6 +24,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -74,10 +75,12 @@ public class Eventos extends AppCompatActivity {
         rBtnOtraRuta=(RadioButton)findViewById(R.id.rBtnOtraRtua);
         editTextEvento=(EditText)findViewById(R.id.editTextEvento);
         btnEnviarNovedad=(Button)findViewById(R.id.btnEnviarNovedad);
+        txtViewEstudiante=(TextView)findViewById(R.id.txtViewEstudiante);
 
 
         Bundle bundle=getIntent().getExtras();
         nombreEstudiante=bundle.getString("estudianteSeleccionado");
+        txtViewEstudiante.setText("Estudiante: "+nombreEstudiante);
         eventos=bundle.getString("evento");
         dateTime=bundle.getString("dateTime");
         ruta=bundle.getString("ruta");

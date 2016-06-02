@@ -55,6 +55,7 @@ public class Login extends AppCompatActivity {
     SQLiteDatabase myDB;
     Button readGPS;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,15 +76,26 @@ public class Login extends AppCompatActivity {
         editTextRuta=(EditText)findViewById(R.id.editTextRuta);
         btnIngresar=(Button)findViewById(R.id.btnIngresar);
         btnRegistrar=(TextView)findViewById(R.id.textViewRegistrar);
+
         //readGPS=(Button)findViewById(R.id.readGPS);
         //readGPS.setVisibility(View.INVISIBLE);
 
+        btnRegistrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Registro
+                Toast.makeText(getApplicationContext(),"registrame",Toast.LENGTH_LONG).show();
+                Intent registro=new Intent(Login.this,registroActivity.class);
+                startActivity(registro);
 
+            }
+        });
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
         }else{
+            Toast.makeText(getApplicationContext(),"Debe habilitar el GPS!!!",Toast.LENGTH_SHORT).show();
             showGPSDisabledAlertToUser();
         }
         new GPSTracker(Login.this);

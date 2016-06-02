@@ -10,7 +10,7 @@
     tools:context="com.coltrack.controlrutasmonitor.amopm">
 
     <RelativeLayout
-        android:layout_width="350dp"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
@@ -25,7 +25,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="19dp"
             android:textColor="#0060b6"
-            android:textSize="26dp" />
+            android:textSize="20dp" />
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                 android:text="Recoger Estudiantes (AM)"
                 android:id="@+id/rBtnMañana"
                 android:checked="false"
-                android:textSize="26dp"
+                android:textSize="16dp"
                 android:textColor="#0060b6" />
 
             <RadioButton
@@ -52,36 +52,36 @@
                 android:text="Dejar Estudiantes (PM)"
                 android:id="@+id/rBtnTarde"
                 android:checked="false"
-                android:textSize="26dp"
+                android:textSize="16dp"
                 android:textColor="#0060b6" />
 
         </RadioGroup>
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="25dp"
             android:text="Continuar"
             android:id="@+id/buttonContinuar"
             android:background="@drawable/roundbtn"
             android:textColor="#ffffff"
-            android:textSize="20dp"
-            android:layout_marginTop="91dp"
+            android:textSize="12dp"
             android:layout_below="@+id/radioGroup"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="27dp" />
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="25dp"
             android:text="Volver"
             android:id="@+id/buttonVolver"
             android:background="@drawable/roundbtn"
             android:textColor="#ffffff"
-            android:textSize="20dp"
+            android:textSize="12dp"
             android:layout_below="@+id/buttonContinuar"
-            android:layout_marginTop="20dp"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="23dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -93,7 +93,7 @@
             android:layout_centerHorizontal="true"
 
             android:textColor="#0060b6"
-            android:textSize="26dp" />
+            android:textSize="20dp" />
 
 
     </RelativeLayout>

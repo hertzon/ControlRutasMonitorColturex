@@ -10,7 +10,7 @@
     >
 
     <RelativeLayout
-        android:layout_width="300dp"
+        android:layout_width="220dp"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
@@ -21,7 +21,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Listado de Novedades"
             android:id="@+id/titulo"
-            android:textSize="24dp"
+            android:textSize="10dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:textColor="#0060b6" />
@@ -30,15 +30,14 @@
 
             android:text="Volver"
             android:id="@+id/btnVolver"
-            android:textSize="16dp"
+            android:textSize="12dp"
             android:textColor="#ffffff"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="25dp"
             android:background="@drawable/roundbtn"
+            android:layout_marginTop="5dp"
             android:layout_below="@+id/btnEnviarNovedad"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="20dp"
-            android:layout_alignParentStart="true" />
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,7 +45,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Estudiante"
             android:id="@+id/txtViewEstudiante"
-            android:textSize="20dp"
+            android:textSize="10dp"
             android:textColor="#0060b6"
             android:layout_marginTop="5dp"
             android:layout_below="@+id/titulo"
@@ -68,7 +67,7 @@
                 android:text="Enfermedad"
                 android:id="@+id/rBtnEnfermedad"
                 android:checked="false"
-                android:textSize="20dp"
+                android:textSize="8dp"
                 android:textColor="#0060b6" />
 
             <RadioButton
@@ -77,7 +76,7 @@
                 android:text="Ausente, no salio, no subio"
                 android:id="@+id/rBtnAusente"
                 android:checked="false"
-                android:textSize="20dp"
+                android:textSize="8dp"
                 android:textColor="#0060b6" />
 
             <RadioButton
@@ -86,7 +85,7 @@
                 android:text="Abordo otra ruta"
                 android:id="@+id/rBtnOtraRtua"
                 android:checked="false"
-                android:textSize="20dp"
+                android:textSize="8dp"
                 android:textColor="#0060b6" />
         </RadioGroup>
 
@@ -100,7 +99,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:hint="Escriba o Seleccione la novedad"
-            android:textSize="20dp" />
+            android:textSize="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -108,8 +107,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Texto Evento"
             android:id="@+id/textView4"
-            android:layout_marginTop="20dp"
-            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:textSize="10dp"
             android:textColor="#0060b6"
             android:layout_below="@+id/radioGroup"
             android:layout_alignParentLeft="true"
@@ -118,10 +117,10 @@
         <Button
             android:text="Enviar Novedad"
             android:id="@+id/btnEnviarNovedad"
-            android:textSize="16dp"
+            android:textSize="12dp"
             android:textColor="#ffffff"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="25dp"
             android:layout_below="@+id/editTextEvento"
             android:layout_alignParentLeft="true"
             android:background="@drawable/roundbtn"
@@ -134,7 +133,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Seleccione y/o escriba la novedad "
             android:id="@+id/textView5"
-            android:textSize="20dp"
+            android:textSize="10dp"
             android:textColor="#0060b6"
             android:layout_below="@+id/txtViewEstudiante"
             android:layout_alignParentLeft="true"

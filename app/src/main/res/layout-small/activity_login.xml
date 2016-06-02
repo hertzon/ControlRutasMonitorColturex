@@ -11,19 +11,18 @@
     android:background="#ffffff">
 
     <RelativeLayout
-        android:layout_width="350dp"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
 
         <ImageView
-            android:layout_width="216dp"
-            android:layout_height="130dp"
+            android:layout_width="108dp"
+            android:layout_height="65dp"
             android:id="@+id/imageView"
             android:background="@drawable/logo"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp" />
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,7 +31,7 @@
             android:text="Version  Monitor Ruta"
             android:id="@+id/textView2"
             android:textColor="#0060b6"
-            android:textSize="20dp"
+            android:textSize="12dp"
             android:layout_marginTop="5dp"
             android:layout_below="@+id/imageView"
             android:layout_centerHorizontal="true" />
@@ -45,7 +44,7 @@
 
             android:singleLine="true"
             android:textColorHint="#c2c2c3"
-            android:textSize="20dp"
+            android:textSize="12dp"
 
 
             android:layout_below="@+id/textView2"
@@ -63,7 +62,7 @@
 
             android:hint="Ruta"
             android:textColorHint="#c2c2c3"
-            android:textSize="20dp" />
+            android:textSize="12dp" />
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -79,11 +78,11 @@
             android:layout_alignParentEnd="true"
             android:hint="Contraseña"
             android:textColorHint="#c2c2c3"
-            android:textSize="20dp" />
+            android:textSize="12dp" />
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="30dp"
             android:text="INGRESAR"
             android:id="@+id/btnIngresar"
             android:layout_below="@+id/editTextPassword"
@@ -96,7 +95,7 @@
 
 
             android:textColor="#ffffff"
-            android:textSize="20dp" />
+            android:textSize="12dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -105,7 +104,7 @@
             android:text="Coltrack SAS"
             android:id="@+id/textView3"
             android:textColor="#3290d7"
-            android:textSize="30dp"
+            android:textSize="12dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
 
@@ -116,11 +115,10 @@
             android:text="Registro"
             android:id="@+id/textViewRegistrar"
             android:textColor="#c2c2c3"
-            android:textSize="30dp"
+            android:textSize="16dp"
             android:onClick="onClick"
             android:clickable="true"
-            android:layout_marginTop="33dp"
-            android:layout_below="@+id/btnIngresar"
+            android:layout_above="@+id/textView3"
             android:layout_centerHorizontal="true" />
 
 

@@ -33,8 +33,15 @@
             android:name=".Listado"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".Selecciona" />
-        <activity android:name=".Eventos"></activity>
+        <activity
+            android:name=".Selecciona"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Eventos"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity android:name=".registroActivity"></activity>
     </application>
 
 </manifest>

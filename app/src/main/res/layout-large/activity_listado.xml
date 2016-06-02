@@ -10,7 +10,7 @@
     tools:context="com.coltrack.controlrutasmonitor.Listado">
 
     <RelativeLayout
-        android:layout_width="500dp"
+        android:layout_width="350dp"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
@@ -19,13 +19,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Large Estudiantes Ruta: "
+            android:text="Normal Estudiantes Ruta: "
             android:id="@+id/textViewEstudiantesRuta"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:textSize="30dp"
-            android:textColor="#0060b6" />
+            android:textColor="#0060b6"
+            android:textSize="26dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,114 +36,36 @@
             android:layout_below="@+id/textViewEstudiantesRuta"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:textSize="30dp"
-            android:textColor="#0060b6" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Progreso"
-            android:id="@+id/textViewProgreso"
-            android:layout_below="@+id/textViewAccion"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:textSize="30dp"
-            android:textColor="#0060b6" />
-
-        <ExpandableListView
-            android:id="@+id/lvExp1"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_weight="0.09"
-            android:choiceMode="singleChoice"
-            android:textAlignment="center"
-            android:layout_marginTop="110dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Recoger"
-            android:id="@+id/buttonRecoger"
-            android:layout_below="@+id/buttonLlego"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/roundbtn"
-            android:layout_centerHorizontal="true"
-            android:textColor="#ffffff"
-            android:textSize="24dp" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Llamar Acudiente"
-            android:id="@+id/buttonLlamar"
-            android:layout_below="@+id/buttonRecoger"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/roundbtn"
-            android:layout_centerHorizontal="true"
-            android:textColor="#ffffff"
-
-            android:textSize="24dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Estudiante Seleccionado:"
-            android:id="@+id/textViewEstudianteSeleccionado"
-            android:layout_below="@+id/lvExp1"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:textSize="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:textColor="#0060b6" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Grado"
-            android:id="@+id/textViewGrado"
-            android:textSize="30dp"
-            android:layout_below="@+id/textViewEstudianteSeleccionado"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:textColor="#0060b6" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Movil Acudiente"
-            android:id="@+id/textViewMobilAcudiente"
-            android:textSize="30dp"
-            android:layout_below="@+id/textViewGrado"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:textColor="#0060b6" />
+            android:textColor="#0060b6"
+            android:textSize="26dp" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
             android:text="Test GPS"
             android:id="@+id/buttonTestGPS"
-            android:layout_below="@+id/buttonLlamar"
-            android:layout_centerHorizontal="true" />
+            android:background="@drawable/roundbtn"
+            android:textColor="#ffffff"
+            android:textSize="20dp"
+            android:layout_marginTop="46dp"
+            android:layout_below="@+id/textViewAccion"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Llego Ruta"
-            android:id="@+id/buttonLlego"
+            android:layout_height="45dp"
+            android:text="Seleccionar Estudiante(s)"
+            android:id="@+id/buttonSeleccionarEstudiante"
             android:background="@drawable/roundbtn"
-            android:layout_below="@+id/textViewMobilAcudiente"
-            android:layout_marginTop="30dp"
             android:textColor="#ffffff"
-            android:textSize="24dp"
-            android:layout_centerHorizontal="true" />
+            android:textSize="20dp"
+
+            android:layout_below="@+id/buttonTestGPS"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="33dp" />
 
     </RelativeLayout>
 </RelativeLayout>

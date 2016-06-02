@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Registro"
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="#0060b6"
+            android:textSize="40dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/editTextNombre"
+            android:layout_marginTop="15dp"
+            android:hint="Nombre Completo"
+            android:layout_below="@+id/textView"
+            android:textSize="34dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/editTextCorreo"
+            android:layout_below="@+id/editTextNombre"
+            android:layout_centerHorizontal="true"
+            android:hint="Correo"
+            android:textSize="34dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:inputType="phone"
+            android:ems="10"
+            android:id="@+id/editTextNumeroCelular"
+            android:hint="Numero celular"
+            android:layout_below="@+id/editTextCorreo"
+            android:layout_alignLeft="@+id/editTextCorreo"
+            android:layout_alignStart="@+id/editTextCorreo"
+            android:textSize="34dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/editTextColegio"
+            android:layout_below="@+id/editTextNumeroCelular"
+            android:hint="Colegio"
+            android:layout_alignRight="@+id/editTextNumeroCelular"
+            android:layout_alignEnd="@+id/editTextNumeroCelular"
+            android:layout_alignLeft="@+id/editTextNumeroCelular"
+            android:layout_alignStart="@+id/editTextNumeroCelular"
+            android:textSize="34dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enviar"
+            android:id="@+id/buttonEnviar"
+            android:layout_below="@+id/editTextColegio"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/roundbtn"
+            android:layout_marginTop="20dp"
+            android:textColor="#ffffff"
+            android:textSize="30dp" />
+
+    </RelativeLayout>
+</LinearLayout>

@@ -2,6 +2,7 @@ package com.coltrack.controlrutasmonitor;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,9 +14,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -243,6 +248,7 @@ public class Selecciona extends AppCompatActivity {
 
                             String query="update estudiantes set evento='realizado' where nombreEstudiante='" + estudianteSeleccionado + "'";
                             db.execSQL(query);
+                            seconds=0;
 
                         }
 
@@ -250,7 +256,7 @@ public class Selecciona extends AppCompatActivity {
                     rows.clear();
                     populateItems();
                 }else {
-                    Toast.makeText(getApplicationContext(),"No hay estudiantes para procesar!!!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Seleccione al menos un estudiante!!!",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -326,18 +332,19 @@ public class Selecciona extends AppCompatActivity {
         Column5 = c.getColumnIndex("correoAcudiente");
         Column6 = c.getColumnIndex("paraderoAM");
         Column7 = c.getColumnIndex("paraderoPM");
-        Column7 = c.getColumnIndex("colegio");
+        Column8 = c.getColumnIndex("colegio");
         c.moveToFirst();
         String Data=null;
         Row row = null;
 
         rows = new ArrayList<Row>(estudiantesTotales);
+        Log.d(LOGTAG,"Estudiantes encontrados db: "+c.getCount());
 
         if (c != null && c.getCount()>0) {
             // Loop through all Results
             do {
                 Data=c.getString(Column1)+'\t'+c.getString(Column2)+'\t'+c.getString(Column3)+'\t'+c.getString(Column4)+'\t'+c.getString(Column5);
-                //Log.d(LOGTAG, Data);
+                Log.d(LOGTAG, Data);
                 row = new Row();
                 if (accion.equals("recoger") && isInteger(c.getString(Column6))){
                     //listado.add(c.getString(Column1)+", "+"(P"+c.getString(Column6)+")");
@@ -349,7 +356,7 @@ public class Selecciona extends AppCompatActivity {
                 if (accion.equals("dejar") && isInteger(c.getString(Column7))){
                     //listado.add(c.getString(Column1)+", "+"(P"+c.getString(Column7)+")");
                     row.setTitle(c.getString(Column1));
-                    row.setSubtitle(c.getString(Column6));
+                    row.setSubtitle(c.getString(Column7));
                     rows.add(row);
                 }
 
@@ -598,6 +605,56 @@ public class Selecciona extends AppCompatActivity {
         super.onResume();
         //Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
         populateItems();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu2) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu2, menu2);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.cerrarApp:
+                //Toast.makeText(getApplicationContext(),"Cargnado estudiantes de servidor",Toast.LENGTH_LONG).show();
+                new AlertDialog.Builder(Selecciona.this)
+                        .setTitle("Accion")
+                        .setMessage("Desea cerrar la aplicacion?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                                Toast.makeText(getApplicationContext(),"Chao!",Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), Login.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.putExtra("EXIT", true);
+                                startActivity(intent);
+                            }})
+                        .setNegativeButton("No", null).show();
+                return true;
+//            case R.id.comenzarRuta:
+//                //Enviamos evento de comienzo de ruta
+//                Toast.makeText(getApplicationContext(),"Comenzando Ruta",Toast.LENGTH_SHORT).show();
+//                estudianteSeleccionado=null;
+//                accion="comienzaRuta";
+//                sendEventos send1=new sendEventos();
+//                send1.execute();
+//                populateItems();
+//
+//
+//                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 
 }
