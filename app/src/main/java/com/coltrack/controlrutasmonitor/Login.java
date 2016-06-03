@@ -80,11 +80,13 @@ public class Login extends AppCompatActivity {
         //readGPS=(Button)findViewById(R.id.readGPS);
         //readGPS.setVisibility(View.INVISIBLE);
 
+
+
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Registro
-                Toast.makeText(getApplicationContext(),"registrame",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"registrame",Toast.LENGTH_LONG).show();
                 Intent registro=new Intent(Login.this,registroActivity.class);
                 startActivity(registro);
 
@@ -112,16 +114,7 @@ public class Login extends AppCompatActivity {
 //            }
 //        });
 
-        btnRegistrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Registro
-                //Toast.makeText(getApplicationContext(),"registrame",Toast.LENGTH_LONG).show();
-                //Intent registro=new Intent(Login.this,registroActivity.class);
-                //startActivity(registro);
 
-            }
-        });
 
         btnIngresar.setOnClickListener(new View.OnClickListener() {
             @Override

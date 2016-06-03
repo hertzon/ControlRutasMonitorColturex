@@ -105,7 +105,7 @@
             android:text="Coltrack SAS"
             android:id="@+id/textView3"
             android:textColor="#3290d7"
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
 

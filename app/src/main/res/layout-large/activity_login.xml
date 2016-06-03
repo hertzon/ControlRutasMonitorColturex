@@ -11,7 +11,7 @@
     android:background="#ffffff">
 
     <RelativeLayout
-        android:layout_width="350dp"
+        android:layout_width="400dp"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
@@ -105,9 +105,10 @@
             android:text="Coltrack SAS"
             android:id="@+id/textView3"
             android:textColor="#3290d7"
-            android:textSize="30dp"
+            android:textSize="20dp"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:textIsSelectable="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -116,7 +117,7 @@
             android:text="Registro"
             android:id="@+id/textViewRegistrar"
             android:textColor="#c2c2c3"
-            android:textSize="30dp"
+            android:textSize="22dp"
             android:onClick="onClick"
             android:clickable="true"
             android:layout_marginTop="33dp"
