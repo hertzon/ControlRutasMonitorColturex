@@ -122,6 +122,10 @@ public class Login extends AppCompatActivity {
                 strUsuario=editTextUsuario.getText().toString();
                 strPass=editTextPassword.getText().toString();
                 strRuta=editTextRuta.getText().toString();
+                //Eliminamos espacios en blanco
+                strUsuario=strUsuario.replaceAll(" ","");
+                strPass=strPass.replaceAll(" ","");
+                strRuta=strRuta.replaceAll(" ","");
                 boolean isError=false;
                 if (TextUtils.isEmpty(editTextUsuario.getText())){
                     editTextUsuario.setError("Ingrese nombre del usuario!!");
@@ -222,7 +226,7 @@ public class Login extends AppCompatActivity {
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
                 nameValuePairs.add(new BasicNameValuePair("json", jsonObject.toString()));
                 HttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost("http://107.170.38.31/phpControlRutas/leerEstudiantes.php");
+                HttpPost httpPost = new HttpPost("http://107.170.62.116/phpControlRutas/leerEstudiantes.php");
                 try {
                     httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                     try {
@@ -349,7 +353,7 @@ public class Login extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
                 nameValuePairs.add(new BasicNameValuePair("json", jsonObject.toString()));
-                String response = makePOSTRequest("http://107.170.38.31/phpControlRutas/login.php", nameValuePairs );
+                String response = makePOSTRequest("http://107.170.62.116/phpControlRutas/login.php", nameValuePairs );
                 Log.d(LOGTAG,"Response: "+response);
                 if (response.equals("0")){
                     //Toast.makeText(Login.this,"Usuario y/o contraseña errados!",Toast.LENGTH_SHORT).show();

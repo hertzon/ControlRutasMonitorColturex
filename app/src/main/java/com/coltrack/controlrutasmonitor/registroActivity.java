@@ -130,7 +130,7 @@ public class registroActivity extends AppCompatActivity {
                 Log.d(LOGTAG, "Enviando datos de contacto al servidor....");
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
                 nameValuePairs.add(new BasicNameValuePair("json", jsonObject.toString()));
-                String response = makePOSTRequest("http://107.170.38.31/phpDir/datosContacto.php", nameValuePairs);
+                String response = makePOSTRequest("http://107.170.62.116/phpDir/datosContacto.php", nameValuePairs);
                 Log.d(LOGTAG, "mail php response: "+response);
                 if (response.equals("contacto almacenado")){
                     status=true;

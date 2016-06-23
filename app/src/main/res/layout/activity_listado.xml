@@ -43,7 +43,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:text="Test GPS"
+            android:text="TEST GPS"
             android:id="@+id/buttonTestGPS"
             android:background="@drawable/roundbtn"
             android:textColor="#ffffff"

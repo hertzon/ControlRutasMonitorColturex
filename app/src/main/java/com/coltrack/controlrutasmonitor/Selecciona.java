@@ -1,5 +1,6 @@
 package com.coltrack.controlrutasmonitor;
 
+import android.accounts.AccountManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -346,14 +347,14 @@ public class Selecciona extends AppCompatActivity {
                 Data=c.getString(Column1)+'\t'+c.getString(Column2)+'\t'+c.getString(Column3)+'\t'+c.getString(Column4)+'\t'+c.getString(Column5);
                 Log.d(LOGTAG, Data);
                 row = new Row();
-                if (accion.equals("recoger") && isInteger(c.getString(Column6))){
+                if (accion.equals("recoger") && isInteger(c.getString(Column6)) && !c.getString(Column6).equals("0")){
                     //listado.add(c.getString(Column1)+", "+"(P"+c.getString(Column6)+")");
                     row.setTitle(c.getString(Column1));
                     row.setSubtitle(c.getString(Column6));
                     rows.add(row);
 
                 }
-                if (accion.equals("dejar") && isInteger(c.getString(Column7))){
+                if (accion.equals("dejar") && isInteger(c.getString(Column7)) && !c.getString(Column7).equals("0")){
                     //listado.add(c.getString(Column1)+", "+"(P"+c.getString(Column7)+")");
                     row.setTitle(c.getString(Column1));
                     row.setSubtitle(c.getString(Column7));
@@ -523,7 +524,7 @@ public class Selecciona extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
                 nameValuePairs.add(new BasicNameValuePair("json", jsonObject.toString()));
-                String response = makePOSTRequest("http://107.170.38.31/phpControlRutas/leerEventos.php", nameValuePairs );
+                String response = makePOSTRequest("http://107.170.62.116/phpControlRutas/leerEventos.php", nameValuePairs );
                 Log.d(LOGTAG,"Response: "+response);
                 if (response.equals("PROBLEM")){
                     //Toast.makeText(Login.this,"Usuario y/o contraseña errados!",Toast.LENGTH_SHORT).show();
@@ -646,6 +647,29 @@ public class Selecciona extends AppCompatActivity {
 //
 //
 //                return true;
+            case R.id.finalizarRuta:
+                Toast.makeText(getApplicationContext(),"Ruta Finalizada..",Toast.LENGTH_SHORT).show();
+                new AlertDialog.Builder(Selecciona.this)
+                        .setTitle("Accion")
+                        .setMessage("Desea cerrar finalizar la ruta?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                sendEvento finalizarRuta=new sendEvento();
+                                finalizarRuta.execute();
+                                Toast.makeText(getApplicationContext(),"Chao!",Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), Login.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.putExtra("EXIT", true);
+                                startActivity(intent);
+
+
+                            }})
+                        .setNegativeButton("No", null).show();
+
+                return true;
+
 
 
             default:
@@ -655,6 +679,150 @@ public class Selecciona extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
+    }
+
+    private class sendEvento extends AsyncTask<Void, Void, Boolean> {
+        private ProgressDialog pd;
+        @Override
+        protected void onPreExecute() {
+            pd = ProgressDialog.show(Selecciona.this, "Estado Conexion Servidor", "Conectando...");
+            Log.d(LOGTAG,"preexecute");
+        }
+        @Override
+        protected void onPostExecute(Boolean result) {
+            Log.d(LOGTAG,"post execute");
+            if (pd.isShowing()) {
+                pd.dismiss();
+            }
+            if (!result) {
+                Toast.makeText(Selecciona.this,"Problema procesando evento!!",Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        //update ui here
+
+                    }
+                });
+            }else {
+                Toast.makeText(Selecciona.this,"Evento procesado correctamente!!",Toast.LENGTH_SHORT).show();
+
+            }
+        }
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            boolean status=false;
+            Log.d(LOGTAG, "doing");
+            jsonObject = new JSONObject();
+            try {
+                //readGPS();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String timestamp = sdf.format(new Date());
+
+//                Log.d(LOGTAG,"nombreEstudiante: "+estudianteSeleccionado);
+//                Log.d(LOGTAG,"evento: "+accion);
+//                Log.d(LOGTAG,"datetime: "+timestamp);
+//                Log.d(LOGTAG,"ruta: "+ruta);
+//                Log.d(LOGTAG,"colegio: "+colegio);
+//                Log.d(LOGTAG,"latitud: "+strLatitud);
+//                Log.d(LOGTAG,"longitud: "+strLongitud);
+
+
+                try {
+                    jsonObject.put("nombreEstudiante", estudianteSeleccionado);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                accion="Termina ruta";
+                jsonObject.put("evento", accion);
+                jsonObject.put("datetime", timestamp);
+                jsonObject.put("ruta", ruta);
+                jsonObject.put("colegio", colegio);
+                jsonObject.put("latitud", strLatitud);
+                jsonObject.put("longitud", strLongitud);
+                jsonObject.put("segundos",seconds);
+
+
+                //Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                nameValuePairs.add(new BasicNameValuePair("json", jsonObject.toString()));
+                String response = makePOSTRequest("http://107.170.62.116/phpControlRutas/leerEventos.php", nameValuePairs );
+                Log.d(LOGTAG,"Response: "+response);
+                if (response.equals("PROBLEM")){
+                    //Toast.makeText(Login.this,"Usuario y/o contraseña errados!",Toast.LENGTH_SHORT).show();
+                    status=false;
+                }
+                if (response.equals("OK")){
+
+                    status=true;
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return status;
+        }
+        public String makePOSTRequest(String url, List<NameValuePair> nameValuePairs) {
+            String response = "";
+
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url);
+            try {
+                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            try {
+                HttpResponse httpResponse = null;
+                try {
+                    httpResponse = httpClient.execute(httpPost);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String jsonResult = inputStreamToString(httpResponse.getEntity().getContent()).toString();
+                JSONObject object = null;
+                Log.d(LOGTAG, "Response:" + jsonResult);
+                try {
+                    object = new JSONObject(jsonResult);
+                    String estadoLogin = object.getString("rta");
+
+                    Log.d(LOGTAG, "Respuesta Server:" + estadoLogin);
+                    response=estadoLogin;
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d(LOGTAG, "Error1:" + e);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+        private StringBuilder inputStreamToString(InputStream is)
+        {
+            String rLine = "";
+            StringBuilder answer = new StringBuilder();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+            try
+            {
+                while ((rLine = rd.readLine()) != null)
+                {
+                    answer.append(rLine);
+                }
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+            return answer;
+        }
+
     }
 
 }

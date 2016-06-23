@@ -229,7 +229,7 @@ public class Eventos extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
                 nameValuePairs.add(new BasicNameValuePair("json", jsonObject.toString()));
-                String response = makePOSTRequest("http://107.170.38.31/phpControlRutas/leerEventos.php", nameValuePairs );
+                String response = makePOSTRequest("http://107.170.62.116/phpControlRutas/leerEventos.php", nameValuePairs );
                 Log.d(LOGTAG,"Response: "+response);
                 if (response.equals("PROBLEM")){
                     //Toast.makeText(Login.this,"Usuario y/o contraseña errados!",Toast.LENGTH_SHORT).show();
