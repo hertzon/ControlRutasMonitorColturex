@@ -121,6 +121,15 @@
             android:layout_above="@+id/textView3"
             android:layout_centerHorizontal="true" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="V1.2"
+            android:id="@+id/textView7"
+            android:layout_above="@+id/textViewRegistrar"
+            android:layout_centerHorizontal="true" />
+
 
     </RelativeLayout>
 

@@ -11,6 +11,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -25,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -63,10 +65,10 @@ public class Selecciona extends AppCompatActivity {
     Cursor c;
     int estudiantesTotales=0;
 
-    Button buttonLlamar;
-    Button buttonLlego;
-    Button buttonAccion;
-    Button buttonEventos;
+    ImageButton buttonLlamar;
+    ImageButton buttonLlego;
+    ImageButton buttonAccion;
+    ImageButton buttonEventos;
     int seconds=0;
     boolean stopCounter=false;
     boolean onlyTimeProgreso=false;
@@ -82,10 +84,10 @@ public class Selecciona extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview);
         listView = (ListView) findViewById(android.R.id.list);
-        buttonLlamar=(Button)findViewById(R.id.buttonLlamar);
-        buttonLlego=(Button)findViewById(R.id.buttonLlego);
-        buttonAccion=(Button)findViewById(R.id.buttonAccion);
-        buttonEventos=(Button)findViewById(R.id.buttonEventos);
+        buttonLlamar=(ImageButton)findViewById(R.id.buttonLlamar);
+        buttonLlego=(ImageButton)findViewById(R.id.buttonLlego);
+        buttonAccion=(ImageButton)findViewById(R.id.buttonAccion);
+        buttonEventos=(ImageButton)findViewById(R.id.buttonEventos);
 
 
         Bundle bundle=getIntent().getExtras();
@@ -93,9 +95,9 @@ public class Selecciona extends AppCompatActivity {
         accion=bundle.getString("accion");
         Log.d(LOGTAG, "Recibido en Selecciona: " + "ruta: " + ruta + " accion: " + accion);
         if (accion.equals("recoger")){
-            buttonAccion.setText("Recoger");
+            //buttonAccion.setText("Recoger");
         }else {
-            buttonAccion.setText("Dejar");
+            //buttonAccion.setText("Dejar");
         }
 
         db = openOrCreateDatabase("controlRutas", MODE_PRIVATE, null);
