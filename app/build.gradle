@@ -6,7 +6,7 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        applicationId "com.coltrack.controlrutasmonitor"
+        applicationId "com.coltrack.controlrutasmonitoriconos"
         minSdkVersion 7
         targetSdkVersion 23
         versionCode 3
