@@ -1,4 +1,4 @@
-package com.coltrack.controlrutasmonitor;
+package com.coltrack.controlrutasmonitorcolturex;
 
 /**
  * Created by Nelson Rodriguez on 31/05/2016.
@@ -6,11 +6,13 @@ package com.coltrack.controlrutasmonitor;
 import java.util.List;
 
 //import com.danielme.blog.demo.listviewcheckbox.R;
-import com.coltrack.controlrutasmonitor.R;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,8 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Custom adapter - "View Holder Pattern".
@@ -29,12 +33,21 @@ public class CustomArrayAdapter extends ArrayAdapter<Row> implements
         View.OnClickListener {
 
     private LayoutInflater layoutInflater;
-    static SQLiteDatabase dbb;
-    //public int n[];
+    static SQLiteDatabase db;
+    String LOGTAG = "CONTROLRUTAS";
+    private Context context;
+    Cursor c;
+    SharedPreferences sharedPreferences;
+    String ruta=null;
+    String accion=null;
 
     public CustomArrayAdapter(Context context, List<Row> objects) {
         super(context, 0, objects);
         layoutInflater = LayoutInflater.from(context);
+        this.context=context;
+        sharedPreferences = context.getSharedPreferences("controlRutas", Context.MODE_PRIVATE);
+        ruta = sharedPreferences.getString("Ruta", null);
+        accion = sharedPreferences.getString("Jornada", null);
     }
 
     @Override
@@ -77,12 +90,48 @@ public class CustomArrayAdapter extends ArrayAdapter<Row> implements
         getItem(position).setChecked(checkBox.isChecked());
 
         changeBackground(CustomArrayAdapter.this.getContext(), checkBox);
+        Log.d(LOGTAG,"CustomArrayAdapter pos: "+position+" checkBox.isChecked(): "+checkBox.isChecked());
+
+
         String msg = this.getContext().getString(R.string.check_toast,
                 position, checkBox.isChecked());
-        //Toast.makeText(this.getContext(),"msg: "+ msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.getContext(),"msg: "+ msg, Toast.LENGTH_SHORT).show();
+        //dbb=dbb.openOrCreateDatabase("controlRutas", MODE_PRIVATE, null);
+
+
+        String title=null;
+        title=getItem(position).getTitle();
+
+        Log.i(LOGTAG,"Title: "+title);
+        String[] parts=title.split("-");
+        String nombreEstudiante=parts[1];
+
+
+        sharedPreferences = context.getSharedPreferences("controlRutas", Context.MODE_PRIVATE);
+        ruta = sharedPreferences.getString("Ruta", null);
+
+        db = context.openOrCreateDatabase("controlRutas", MODE_PRIVATE, null);
+
+        String query="SELECT * FROM estudiantes WHERE nombreEstudiante='"+nombreEstudiante+"'";
+
+        c = db.rawQuery(query,null);
+        c.moveToFirst();
+        if (c.getCount() > 0) {
+            do {
+                Log.d(LOGTAG,"accion: "+accion);
+                Log.d(LOGTAG,"Codigo: "+c.getString(c.getColumnIndex("codigo")));
+                Log.d(LOGTAG,"NombreEstudiante: "+c.getString(c.getColumnIndex("nombreEstudiante")));
+            }while (c.moveToNext());
+
+        }
+
+
+
+
+        db.close();
 
 //
-//        dbb=SQLiteDatabase.openOrCreateDatabase()Database("controlRutas", null, getContext().MODE_PRIVATE);
+//
 //
 //        dbb.execSQL("INSERT INTO "
 //                + "posEnviar"

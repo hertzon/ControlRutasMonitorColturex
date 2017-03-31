@@ -7,12 +7,27 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.coltrack.ColtrackSchool.MainActivity"
+    tools:context="com.coltrack.controlrutasmonitorcolturex.Login"
     android:background="#ffffff">
 
-    <RelativeLayout
-        android:layout_width="400dp"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Coltrack SAS"
+        android:id="@+id/textView3"
+        android:textColor="#3290d7"
+        android:textSize="20dp"
+        android:layout_alignParentBottom="true"
+
+        android:textIsSelectable="true"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="80dp" />
+
+    <LinearLayout
+        android:layout_width="450dp"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
 
@@ -23,10 +38,11 @@
             android:background="@drawable/logo"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Version  Monitor Ruta"
@@ -35,59 +51,84 @@
             android:textSize="20dp"
             android:layout_marginTop="5dp"
             android:layout_below="@+id/imageView"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal" />
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editTextUsuario"
-            android:hint="Nombre de usuario monitora"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="3dp">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextUsuario"
+                android:hint="Nombre de usuario monitora"
 
-            android:singleLine="true"
-            android:textColorHint="#c2c2c3"
-            android:textSize="20dp"
+                android:singleLine="true"
+                android:textColorHint="#c2c2c3"
+                android:textSize="20dp"
 
 
-            android:layout_below="@+id/textView2"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="2dp" />
+                android:layout_below="@+id/textView2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="maira" />
+        </android.support.design.widget.TextInputLayout>
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editTextRuta"
-            android:layout_below="@+id/editTextUsuario"
-            android:layout_marginTop="1dp"
-            android:singleLine="true"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextRuta"
+                android:layout_below="@+id/editTextUsuario"
+                android:layout_marginTop="1dp"
+                android:singleLine="true"
 
-            android:hint="Ruta"
-            android:textColorHint="#c2c2c3"
-            android:textSize="20dp" />
-        <EditText
-            android:layout_width="wrap_content"
+                android:hint="Ruta"
+                android:textColorHint="#c2c2c3"
+                android:textSize="20dp"
+                android:text="3" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/editTextPassword"
-            android:layout_below="@+id/editTextRuta"
-            android:singleLine="true"
-            android:layout_marginTop="1dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:hint="Contraseña"
-            android:textColorHint="#c2c2c3"
-            android:textSize="20dp" />
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/editTextPassword"
+                android:layout_below="@+id/editTextRuta"
+                android:singleLine="true"
+                android:layout_marginTop="1dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:hint="Contraseña"
+                android:textColorHint="#c2c2c3"
+                android:textSize="20dp"
+                android:text="1234" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="45dp"
             android:text="INGRESAR"
             android:id="@+id/btnIngresar"
             android:layout_below="@+id/editTextPassword"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="40dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
@@ -98,42 +139,9 @@
             android:textColor="#ffffff"
             android:textSize="20dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Coltrack SAS"
-            android:id="@+id/textView3"
-            android:textColor="#3290d7"
-            android:textSize="20dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:textIsSelectable="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Registro"
-            android:id="@+id/textViewRegistrar"
-            android:textColor="#c2c2c3"
-            android:textSize="22dp"
-            android:onClick="onClick"
-            android:clickable="true"
-            android:layout_marginTop="33dp"
-            android:layout_below="@+id/btnIngresar"
-            android:layout_centerHorizontal="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="V1.3"
-            android:id="@+id/textView8"
-            android:layout_above="@+id/textView3"
-            android:layout_centerHorizontal="true" />
 
 
-    </RelativeLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

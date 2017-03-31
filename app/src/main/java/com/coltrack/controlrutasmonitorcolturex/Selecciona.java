@@ -1,21 +1,23 @@
-package com.coltrack.controlrutasmonitor;
+package com.coltrack.controlrutasmonitorcolturex;
 
-import android.accounts.AccountManager;
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,7 +27,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -52,31 +53,32 @@ import java.util.Date;
 import java.util.List;
 
 public class Selecciona extends AppCompatActivity {
-    String LOGTAG="log";
+    String LOGTAG = "CONTROLRUTAS";
     List<Row> rows;
     private ListView listView;
     String ruta;
     String accion;
-    double latitude=0;
-    double longitude=0;
-    String strLongitud=null;
-    String strLatitud=null;
+    double latitude = 0;
+    double longitude = 0;
+    String strLongitud = null;
+    String strLatitud = null;
     SQLiteDatabase db;
     Cursor c;
-    int estudiantesTotales=0;
+    int estudiantesTotales = 0;
 
-    ImageButton buttonLlamar;
-    ImageButton buttonLlego;
-    ImageButton buttonAccion;
-    ImageButton buttonEventos;
-    int seconds=0;
-    boolean stopCounter=false;
-    boolean onlyTimeProgreso=false;
+    //ImageButton buttonLlamar;
+    //ImageButton buttonLlego;
+    //ImageButton buttonAccion;
+    //ImageButton buttonEventos;
+    int seconds = 0;
+    boolean stopCounter = false;
+    boolean onlyTimeProgreso = false;
     String estudianteSeleccionado;
-    int estudiantesProcesados=0;
+    int estudiantesProcesados = 0;
     JSONObject jsonObject;
     String colegio;
     String telefonoAcudiente;
+    SharedPreferences sharedPreferences;
 
 
     @Override
@@ -84,19 +86,27 @@ public class Selecciona extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview);
         listView = (ListView) findViewById(android.R.id.list);
-        buttonLlamar=(ImageButton)findViewById(R.id.buttonLlamar);
-        buttonLlego=(ImageButton)findViewById(R.id.buttonLlego);
-        buttonAccion=(ImageButton)findViewById(R.id.buttonAccion);
-        buttonEventos=(ImageButton)findViewById(R.id.buttonEventos);
+//        buttonLlamar = (ImageButton) findViewById(R.id.buttonLlamar);
+//        buttonLlego = (ImageButton) findViewById(R.id.buttonLlego);
+//        buttonAccion = (ImageButton) findViewById(R.id.buttonAccion);
+//        buttonEventos = (ImageButton) findViewById(R.id.buttonEventos);
 
 
-        Bundle bundle=getIntent().getExtras();
-        ruta=bundle.getString("ruta").toString();
-        accion=bundle.getString("accion");
+        Log.d(LOGTAG,"En Selecciona.java");
+        sharedPreferences = this.getSharedPreferences("controlRutas", Context.MODE_PRIVATE);
+        ruta = sharedPreferences.getString("Ruta", null);
+        accion = sharedPreferences.getString("Jornada", null);
+
+        Log.d(LOGTAG,"Datos leidos en sharedpreferences: "+ruta+" "+accion);
+
+
+        //Bundle bundle = getIntent().getExtras();
+        //ruta = bundle.getString("ruta").toString();
+        //accion = bundle.getString("accion");
         Log.d(LOGTAG, "Recibido en Selecciona: " + "ruta: " + ruta + " accion: " + accion);
-        if (accion.equals("recoger")){
+        if (accion.equals("recoger")) {
             //buttonAccion.setText("Recoger");
-        }else {
+        } else {
             //buttonAccion.setText("Dejar");
         }
 
@@ -109,160 +119,165 @@ public class Selecciona extends AppCompatActivity {
         populateItems();
 
 
-        buttonEventos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int checkeados = 0;
-                int i = 0;
-                for (i = 0; i < rows.size(); i++) {
-                    if (rows.get(i).isChecked()) {
-                        checkeados++;
-                    }
-                }
-                for (i = 0; i < rows.size(); i++) {
-                    if (rows.get(i).isChecked()) {
-                        estudianteSeleccionado = rows.get(i).getTitle();
-                    }
-                }
+//        buttonEventos.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int checkeados = 0;
+//                int i = 0;
+//                for (i = 0; i < rows.size(); i++) {
+//                    if (rows.get(i).isChecked()) {
+//                        checkeados++;
+//                    }
+//                }
+//                for (i = 0; i < rows.size(); i++) {
+//                    if (rows.get(i).isChecked()) {
+//                        estudianteSeleccionado = rows.get(i).getTitle();
+//                    }
+//                }
+//
+//
+//                getCurrentLocation();
+//                readGPS();
+//
+//                if (checkeados == 1) {
+//                    Intent intentE = new Intent(getApplicationContext(), Eventos.class);
+//
+//
+//                    c = db.rawQuery("SELECT colegio FROM estudiantes WHERE nombreEstudiante='" + estudianteSeleccionado + "'", null);
+//                    c.moveToFirst();
+//                    if (c.getCount() > 0) {
+//                        if (c != null && c.getCount() > 0) {
+//                            // Loop through all Results
+//                            do {
+//                                colegio = c.getString(c.getColumnIndex("colegio"));
+//                                Log.d(LOGTAG, "Colegio estudiante: " + colegio);
+//
+//                            } while (c.moveToNext());
+//                        }
+//                    }
+//
+//                    intentE.putExtra("estudianteSeleccionado", estudianteSeleccionado);
+//                    intentE.putExtra("evento", accion);
+//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                    String timestamp = sdf.format(new Date());
+//                    intentE.putExtra("dateTime", timestamp);
+//                    intentE.putExtra("ruta", ruta);
+//                    intentE.putExtra("colegio", colegio);
+//                    intentE.putExtra("strLatitud", strLatitud);
+//                    intentE.putExtra("strLongitud", strLongitud);
+//                    intentE.putExtra("segundos", seconds);
+//
+//
+//                    startActivity(intentE);
+//                } else if (checkeados == 0) {
+//                    Toast.makeText(getApplicationContext(), "Seleccione al menos un estudiante", Toast.LENGTH_SHORT).show();
+//                } else if (checkeados > 0) {
+//                    Toast.makeText(getApplicationContext(), "Seleccione solo un estudiante", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
 
+//        buttonLlamar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d(LOGTAG, "presiono boton llamar....");
+//                int checkeados = 0;
+//                int i = 0;
+//                for (i = 0; i < rows.size(); i++) {
+//                    if (rows.get(i).isChecked()) {
+//                        checkeados++;
+//                    }
+//                }
+//                Log.d(LOGTAG, "Checkeados: " + checkeados);
+//                if (checkeados > 0) {
+//                    for (i = 0; i < rows.size(); i++) {
+//                        if (rows.get(i).isChecked()) {
+//                            Log.d(LOGTAG, "Checkeado: " + rows.get(i).getTitle());
+//                            estudianteSeleccionado = rows.get(i).getTitle();
+//                            //aca sacamos el dato de telefono del acudiente
+//                            c = db.rawQuery("SELECT telefonoAcudiente FROM estudiantes WHERE nombreEstudiante='" + estudianteSeleccionado + "'", null);
+//                            c.moveToFirst();
+//                            if (c.getCount() > 0) {
+//                                if (c != null && c.getCount() > 0) {
+//                                    // Loop through all Results
+//                                    do {
+//                                        telefonoAcudiente = c.getString(c.getColumnIndex("telefonoAcudiente"));
+//                                        Log.d(LOGTAG, "telefonoAcudiente: " + telefonoAcudiente);
+//                                    } while (c.moveToNext());
+//                                }
+//                                //Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + editTextTelefonoAcudiente.getText().toString()));
+//                                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + telefonoAcudiente));
+//                                if (ActivityCompat.checkSelfPermission(Selecciona.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+//                                    // TODO: Consider calling
+//                                    //    ActivityCompat#requestPermissions
+//                                    // here to request the missing permissions, and then overriding
+//                                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                                    //                                          int[] grantResults)
+//                                    // to handle the case where the user grants the permission. See the documentation
+//                                    // for ActivityCompat#requestPermissions for more details.
+//                                    return;
+//                                }
+//                                startActivity(intent);
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "Seleccione al menos un estudiante", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
-                getCurrentLocation();
-                readGPS();
-
-                if (checkeados==1) {
-                    Intent intentE = new Intent(getApplicationContext(), Eventos.class);
-
-
-                    c = db.rawQuery("SELECT colegio FROM estudiantes WHERE nombreEstudiante='"+estudianteSeleccionado+"'", null);
-                    c.moveToFirst();
-                    if (c.getCount()>0){
-                        if (c != null && c.getCount()>0) {
-                            // Loop through all Results
-                            do {
-                                colegio=c.getString(c.getColumnIndex("colegio"));
-                                Log.d(LOGTAG,"Colegio estudiante: "+colegio);
-
-                            }while(c.moveToNext());
-                        }
-                    }
-
-                    intentE.putExtra("estudianteSeleccionado",estudianteSeleccionado);
-                    intentE.putExtra("evento",accion);
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String timestamp = sdf.format(new Date());
-                    intentE.putExtra("dateTime",timestamp);
-                    intentE.putExtra("ruta",ruta);
-                    intentE.putExtra("colegio",colegio);
-                    intentE.putExtra("strLatitud",strLatitud);
-                    intentE.putExtra("strLongitud",strLongitud);
-                    intentE.putExtra("segundos",seconds);
-
-
-
-
-
-                    startActivity(intentE);
-                }else if (checkeados==0){
-                    Toast.makeText(getApplicationContext(),"Seleccione al menos un estudiante",Toast.LENGTH_SHORT).show();
-                }else if(checkeados>0){
-                    Toast.makeText(getApplicationContext(),"Seleccione solo un estudiante",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-
-        buttonLlamar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(LOGTAG, "presiono boton llamar....");
-                int checkeados = 0;
-                int i = 0;
-                for (i = 0; i < rows.size(); i++) {
-                    if (rows.get(i).isChecked()) {
-                        checkeados++;
-                    }
-                }
-                Log.d(LOGTAG, "Checkeados: " + checkeados);
-                if (checkeados > 0) {
-                    for (i = 0; i < rows.size(); i++) {
-                        if (rows.get(i).isChecked()) {
-                            Log.d(LOGTAG, "Checkeado: " + rows.get(i).getTitle());
-                            estudianteSeleccionado = rows.get(i).getTitle();
-                            //aca sacamos el dato de telefono del acudiente
-                            c = db.rawQuery("SELECT telefonoAcudiente FROM estudiantes WHERE nombreEstudiante='" + estudianteSeleccionado + "'", null);
-                            c.moveToFirst();
-                            if (c.getCount() > 0) {
-                                if (c != null && c.getCount() > 0) {
-                                    // Loop through all Results
-                                    do {
-                                        telefonoAcudiente = c.getString(c.getColumnIndex("telefonoAcudiente"));
-                                        Log.d(LOGTAG, "telefonoAcudiente: " + telefonoAcudiente);
-                                    } while (c.moveToNext());
-                                }
-                                //Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + editTextTelefonoAcudiente.getText().toString()));
-                                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + telefonoAcudiente));
-                                startActivity(intent);
-                            }
-                        }
-                    }
-                }else {
-                    Toast.makeText(getApplicationContext(),"Seleccione al menos un estudiante",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        buttonAccion.setOnClickListener(new View.OnClickListener() {
-            //Cuando se va a recoger o dejar niños
-            @Override
-            public void onClick(View v) {
-                stopCounter=true;
-                onlyTimeProgreso=false;
-                int i=0;
-                int checkeados=0;
-                for (i=0;i<rows.size();i++){
-                    if (rows.get(i).isChecked()){
-                        checkeados++;
-                    }
-                }
-                Log.d(LOGTAG,"Checkeados: "+checkeados);
-                if (checkeados>0){
-                    for (i=0;i<rows.size();i++){
-
-                        if (rows.get(i).isChecked()){
-                            Log.d(LOGTAG,"Checkeado: "+rows.get(i).getTitle());
-                            estudianteSeleccionado=rows.get(i).getTitle();
-                            //aca sacamos el dato de colegio
-                            c = db.rawQuery("SELECT colegio FROM estudiantes WHERE nombreEstudiante='"+estudianteSeleccionado+"'", null);
-                            c.moveToFirst();
-                            if (c.getCount()>0){
-                                if (c != null && c.getCount()>0) {
-                                    // Loop through all Results
-                                    do {
-                                        colegio=c.getString(c.getColumnIndex("colegio"));
-                                        Log.d(LOGTAG,"Colegio estudiante: "+colegio);
-
-                                    }while(c.moveToNext());
-                                }
-                            }
-                            sendEventos send1=new sendEventos();
-                            send1.execute();
-
-                            String query="update estudiantes set evento='realizado' where nombreEstudiante='" + estudianteSeleccionado + "'";
-                            db.execSQL(query);
-                            seconds=0;
-
-                        }
-
-                    }
-                    rows.clear();
-                    populateItems();
-                }else {
-                    Toast.makeText(getApplicationContext(),"Seleccione al menos un estudiante!!!",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        buttonAccion.setOnClickListener(new View.OnClickListener() {
+//            //Cuando se va a recoger o dejar niños
+//            @Override
+//            public void onClick(View v) {
+//                stopCounter = true;
+//                onlyTimeProgreso = false;
+//                int i = 0;
+//                int checkeados = 0;
+//                for (i = 0; i < rows.size(); i++) {
+//                    if (rows.get(i).isChecked()) {
+//                        checkeados++;
+//                    }
+//                }
+//                Log.d(LOGTAG, "Checkeados: " + checkeados);
+//                if (checkeados > 0) {
+//                    for (i = 0; i < rows.size(); i++) {
+//
+//                        if (rows.get(i).isChecked()) {
+//                            Log.d(LOGTAG, "Checkeado: " + rows.get(i).getTitle());
+//                            estudianteSeleccionado = rows.get(i).getTitle();
+//                            //aca sacamos el dato de colegio
+//                            c = db.rawQuery("SELECT colegio FROM estudiantes WHERE nombreEstudiante='" + estudianteSeleccionado + "'", null);
+//                            c.moveToFirst();
+//                            if (c.getCount() > 0) {
+//                                if (c != null && c.getCount() > 0) {
+//                                    // Loop through all Results
+//                                    do {
+//                                        colegio = c.getString(c.getColumnIndex("colegio"));
+//                                        Log.d(LOGTAG, "Colegio estudiante: " + colegio);
+//
+//                                    } while (c.moveToNext());
+//                                }
+//                            }
+//                            sendEventos send1 = new sendEventos();
+//                            send1.execute();
+//
+//                            String query = "update estudiantes set evento='realizado' where nombreEstudiante='" + estudianteSeleccionado + "'";
+//                            db.execSQL(query);
+//                            seconds = 0;
+//
+//                        }
+//
+//                    }
+//                    rows.clear();
+//                    populateItems();
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "Seleccione al menos un estudiante!!!", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
 
 //        buttonLlamar.setOnClickListener(new View.OnClickListener() {
@@ -274,60 +289,80 @@ public class Selecciona extends AppCompatActivity {
 //            }
 //        });
 
+//
+//        buttonLlego.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getApplicationContext(), "Comenzando conteo!!", Toast.LENGTH_SHORT).show();
+//                stopCounter = false;
+//                seconds = 0;
+//                new CountDownTimer(1000, 1000) {
+//                    public void onTick(long millisUntilFinished) {
+//                        seconds++;
+//                        Log.d(LOGTAG, "conteo: " + seconds);
+//                        if (!onlyTimeProgreso) {
+//                            onlyTimeProgreso = true;
+//                        }
+//                    }
+//
+//                    public void onFinish() {
+//                        if (!stopCounter) {
+//                            this.start();
+//                        }
+//                    }
+//                }.start();
+//            }
+//        });
+//
+//
 
-        buttonLlego.setOnClickListener(new View.OnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Comenzando conteo!!",Toast.LENGTH_SHORT).show();
-                stopCounter=false;
-                seconds=0;
-                new CountDownTimer(1000, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        seconds++;
-                        Log.d(LOGTAG,"conteo: "+seconds);
-                        if (!onlyTimeProgreso){
-                            onlyTimeProgreso=true;
-                        }
-                    }
-                    public void onFinish() {
-                        if (!stopCounter) {
-                            this.start();
-                        }
-                    }
-                }.start();
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Log.d(LOGTAG,"Se ha presionado el row: "+position);
+//                Intent intent = new Intent(MainActivity.this, SendMessage.class);
+//                String message = "abc";
+//                intent.putExtra(EXTRA_MESSAGE, message);
+//                startActivity(intent);
             }
         });
+   }
 
-
-
-    }
-
-    public void populateItems(){
+    public void populateItems() {
         //Leemos DB tabla estudiantes y populamos el listview
         //Leemos estudiantes totales
-        c=db.rawQuery("SELECT * FROM " + "estudiantes WHERE ruta1='"+ruta+"'", null);
+        c = db.rawQuery("SELECT * FROM " + "estudiantes WHERE ruta1='" + ruta + "'", null);
         c.moveToFirst();
-        estudiantesTotales=0;
-        if (c != null && c.getCount()>0) {
+        estudiantesTotales = 0;
+        if (c != null && c.getCount() > 0) {
             // Loop through all Results
             do {
                 estudiantesTotales++;
 
-            }while(c.moveToNext());
+            } while (c.moveToNext());
         }
-        Log.d(LOGTAG,"Estudiantes totales: "+estudiantesTotales);
+        Log.d(LOGTAG, "Estudiantes totales: " + estudiantesTotales);
 
 
-        if (accion.equals("recoger")){
-            c = db.rawQuery("SELECT * FROM " + "estudiantes WHERE ruta1='"+ruta+"' and evento='FALTA' order by paraderoAM*1 asc", null);
-            Log.d(LOGTAG,"Query recoger: "+"SELECT * FROM " + "estudiantes WHERE ruta1='"+ruta+"' and evento='FALTA' order by paraderoAM asc");
+        if (accion.equals("recoger")) {
+            //c = db.rawQuery("SELECT * FROM " + "estudiantes WHERE ruta1='" + ruta + "' and evento='FALTA' order by paraderoAM*1 asc", null);
+            c = db.rawQuery("SELECT * FROM " + "estudiantes WHERE ruta1='" + ruta + "' order by paraderoAM*1 asc", null);
+            //Log.d(LOGTAG, "Query recoger: " + "SELECT * FROM " + "estudiantes WHERE ruta1='" + ruta + "' and evento='FALTA' order by paraderoAM asc");
         }
-        if (accion.equals("dejar")){
-            c = db.rawQuery("SELECT * FROM " + "estudiantes WHERE ruta1='"+ruta+"' and evento='FALTA' order by paraderoPM*1 asc", null);
-            Log.d(LOGTAG,"Query dejar: "+"SELECT * FROM " + "estudiantes WHERE ruta1='"+ruta+"' and evento='FALTA' order by paraderoPM desc");
+        if (accion.equals("dejar")) {
+            //c = db.rawQuery("SELECT * FROM " + "estudiantes WHERE ruta1='" + ruta + "' and evento='FALTA' order by paraderoPM*1 asc", null);
+            c = db.rawQuery("SELECT * FROM " + "estudiantes WHERE ruta1='" + ruta + "' order by paraderoPM asc", null);
+            //Log.d(LOGTAG, "Query dejar: " + "SELECT * FROM " + "estudiantes WHERE ruta1='" + ruta + "' and evento='FALTA' order by paraderoPM desc");
         }
-        int Column1=0;int Column2=0;int Column3=0;int Column4=0;int Column5=0;
-        int Column6=0;int Column7=0;int Column8=0;
+        int Column1 = 0;
+        int Column2 = 0;
+        int Column3 = 0;
+        int Column4 = 0;
+        int Column5 = 0;
+        int Column6 = 0;
+        int Column7 = 0;
+        int Column8 = 0;
         Column1 = c.getColumnIndex("nombreEstudiante");
         Column2 = c.getColumnIndex("ruta1");
         Column3 = c.getColumnIndex("nombreAcudiente");
@@ -337,52 +372,68 @@ public class Selecciona extends AppCompatActivity {
         Column7 = c.getColumnIndex("paraderoPM");
         Column8 = c.getColumnIndex("colegio");
         c.moveToFirst();
-        String Data=null;
+        String Data = null;
         Row row = null;
 
         rows = new ArrayList<Row>(estudiantesTotales);
-        Log.d(LOGTAG,"Estudiantes encontrados db: "+c.getCount());
+        Log.d(LOGTAG, "Estudiantes encontrados db: " + c.getCount());
 
-        if (c != null && c.getCount()>0) {
+        if (c != null && c.getCount() > 0) {
             // Loop through all Results
             do {
-                Data=c.getString(Column1)+'\t'+c.getString(Column2)+'\t'+c.getString(Column3)+'\t'+c.getString(Column4)+'\t'+c.getString(Column5);
-                Log.d(LOGTAG, Data);
+                Data = c.getString(Column1) + '\t' + c.getString(Column2) + '\t' + c.getString(Column3) + '\t' + c.getString(Column4) + '\t' + c.getString(Column5);
+                Log.d(LOGTAG, "nid: "+c.getInt(c.getColumnIndex("nid")));
                 row = new Row();
-                if (accion.equals("recoger") && isInteger(c.getString(Column6)) && !c.getString(Column6).equals("0")){
-                    //listado.add(c.getString(Column1)+", "+"(P"+c.getString(Column6)+")");
-                    row.setTitle(c.getString(Column1));
-                    row.setSubtitle(c.getString(Column6));
-                    rows.add(row);
-
+                //String title=c.getInt(c.getColumnIndex("nid"))+"-"+c.getString(Column1);
+                String title=null;
+                if (accion.equals("recoger")){
+                    title=c.getInt(c.getColumnIndex("paraderoAM"))+"-"+c.getString(Column1);
+                }else if(accion.equals("dejar")){
+                    title=c.getInt(c.getColumnIndex("paraderoPM"))+"-"+c.getString(Column1);
                 }
-                if (accion.equals("dejar") && isInteger(c.getString(Column7)) && !c.getString(Column7).equals("0")){
-                    //listado.add(c.getString(Column1)+", "+"(P"+c.getString(Column7)+")");
-                    row.setTitle(c.getString(Column1));
-                    row.setSubtitle(c.getString(Column7));
-                    rows.add(row);
-                }
+                Log.d(LOGTAG,"Title: "+title);
+                row.setTitle(title);
+
+                rows.add(row);
+
+//                if (accion.equals("recoger") && isInteger(c.getString(Column6)) && !c.getString(Column6).equals("0")) {
+//                    //listado.add(c.getString(Column1)+", "+"(P"+c.getString(Column6)+")");
+//                    String title=c.getInt(c.getColumnIndex("nid"))+"-"+c.getString(Column1);
+//                    Log.d(LOGTAG,"Title: "+title);
+//                    row.setTitle(title);
+//                    //row.setSubtitle(c.getString(Column6));
+//                    rows.add(row);
+//
+//                }
+//                if (accion.equals("dejar") && isInteger(c.getString(Column7)) && !c.getString(Column7).equals("0")) {
+//                    //listado.add(c.getString(Column1)+", "+"(P"+c.getString(Column7)+")");
+//                    String title=c.getInt(c.getColumnIndex("nid"))+"-"+c.getString(Column1);
+//                    Log.d(LOGTAG,"Title: "+title);
+//                    row.setTitle(title);
+//                    //row.setSubtitle(c.getString(Column7));
+//                    rows.add(row);
+//                }
 
 
-            }while(c.moveToNext());
+            } while (c.moveToNext());
         }
         listView.setAdapter(new CustomArrayAdapter(this, rows));
     }
 
     public static boolean isInteger(String s) {
-        return isInteger(s,10);
+        return isInteger(s, 10);
     }
 
     public static boolean isInteger(String s, int radix) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-            if(s.isEmpty()) return false;
+            if (s.isEmpty()) return false;
         }
-        for(int i = 0; i < s.length(); i++) {
-            if(i == 0 && s.charAt(i) == '-') {
-                if(s.length() == 1) return false;
+        for (int i = 0; i < s.length(); i++) {
+            if (i == 0 && s.charAt(i) == '-') {
+                if (s.length() == 1) return false;
                 else continue;
             }
-            if(Character.digit(s.charAt(i),radix) < 0) return false;
+            if (Character.digit(s.charAt(i), radix) < 0) return false;
         }
         return true;
     }
@@ -399,6 +450,16 @@ public class Selecciona extends AppCompatActivity {
         crta.setPowerRequirement(Criteria.POWER_LOW);
         String provider = locationManager.getBestProvider(crta, true);
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         locationManager.requestLocationUpdates(provider, 1000, 0,
                 new LocationListener() {
                     @Override
@@ -423,14 +484,14 @@ public class Selecciona extends AppCompatActivity {
                                 //System.out.println("WE GOT THE LOCATION");
                                 //System.out.println(lat);
                                 //System.out.println(lng);
-                                latitude=lat;
-                                longitude=lng;
+                                latitude = lat;
+                                longitude = lng;
 
                                 DecimalFormat numberFormat = new DecimalFormat("#.#######");
-                                strLatitud=numberFormat.format(latitude);
-                                strLatitud=strLatitud.replace(",",".");
-                                strLongitud=numberFormat.format(longitude);
-                                strLongitud=strLongitud.replace(",",".");
+                                strLatitud = numberFormat.format(latitude);
+                                strLatitud = strLatitud.replace(",", ".");
+                                strLongitud = numberFormat.format(longitude);
+                                strLongitud = strLongitud.replace(",", ".");
                                 //Toast.makeText(getApplication(),"lat: "+lat+" long: "+lng,Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -607,7 +668,7 @@ public class Selecciona extends AppCompatActivity {
     @Override protected void onResume() {
         super.onResume();
         //Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
-        populateItems();
+        //populateItems();
     }
 
 

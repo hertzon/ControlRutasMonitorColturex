@@ -1,6 +1,5 @@
-package com.coltrack.controlrutasmonitor;
+package com.coltrack.controlrutasmonitorcolturex;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,8 +10,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,7 +45,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class Listado extends AppCompatActivity {
     TextView textViewEstudiantesRuta;

@@ -7,6 +7,6 @@
         android:drawable="@drawable/highlight_pressed" />
 
     <item
-        android:drawable="@drawable/highlight_focused" />
+        android:drawable="@drawable/verde" />
 
 </selector>

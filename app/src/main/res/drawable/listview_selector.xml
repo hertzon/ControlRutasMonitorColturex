@@ -11,6 +11,6 @@
         android:drawable="@drawable/highlight_focused" />
 
     <item
-        android:drawable="@android:color/white" />
+        android:drawable="@drawable/rojo" />
 
 </selector>

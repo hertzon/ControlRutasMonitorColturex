@@ -7,11 +7,11 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.coltrack.controlrutasmonitor.Listado">
+    tools:context="com.coltrack.controlrutasmonitorcolturex.Listado">
 
     <RelativeLayout
         android:layout_width="420dp"
-        android:layout_height="300dp"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/relativeLayout">
@@ -20,7 +20,7 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@android:id/list"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="#ffffff"
             android:cacheColorHint="@android:color/transparent"
             android:divider="#0060b6"
@@ -36,55 +36,7 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
 
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/relativeLayout">
-
-        <ImageButton
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:id="@+id/buttonAccion"
-
-            android:background="@drawable/new_button_recoger"
-            android:layout_above="@+id/buttonEventos"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <ImageButton
-
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:id="@+id/buttonLlego"
-            android:background="@drawable/new_button"
-            android:layout_above="@+id/buttonLlamar"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <ImageButton
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:id="@+id/buttonLlamar"
-
-            android:background="@drawable/new_button_llamar"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="10dp" />
-
-        <ImageButton
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:id="@+id/buttonEventos"
-
-            android:background="@drawable/new_button_evento"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp" />
-    </RelativeLayout>
 
 
 </RelativeLayout>

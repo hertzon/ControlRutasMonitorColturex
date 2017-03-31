@@ -6,8 +6,8 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        applicationId "com.coltrack.controlrutasmonitoriconos"
-        minSdkVersion 7
+        applicationId "com.coltrack.controlrutasmonitorcolturex"
+        minSdkVersion 14
         targetSdkVersion 23
         versionCode 3
         versionName "1.2"
@@ -26,6 +26,12 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'org.apache.httpcomponents:httpcore:4.4.1'
+    compile 'com.android.support:design:23.2.0'
+    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'com.github.ybq:Android-SpinKit:1.1.0'
+    compile 'com.google.android.gms:play-services-location:7.8.0'
+    compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'com.google.android.gms:play-services:7.8.0'
     //compile 'org.apache.httpcomponents:httpclient:4.5'
     //compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
 

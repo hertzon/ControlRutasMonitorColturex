@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ControlRutasMonitor.iml" filepath="$PROJECT_DIR$/ControlRutasMonitor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ControlRutasMonitorColturex.iml" filepath="$PROJECT_DIR$/ControlRutasMonitorColturex.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

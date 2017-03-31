@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#0060B6</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#0060B6</color>
     <drawable name="highlight_pressed">#98dff3</drawable>
     <drawable name="highlight_focused">#C9C9C9</drawable>
+    <drawable name="rojo">#d9534f</drawable>
+    <drawable name="verde">#5cb85c</drawable>
 </resources>
